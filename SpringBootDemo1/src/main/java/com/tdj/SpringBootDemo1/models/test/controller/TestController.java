@@ -1,5 +1,7 @@
 package com.tdj.SpringBootDemo1.models.test.controller;
 
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Controller;
@@ -22,6 +24,21 @@ public class TestController {
 
 	@Autowired
 	private ApplicationTest applicationTest;
+	
+	
+	private final static Logger LOGGER = LoggerFactory.getLogger(TestController.class); 
+	
+	@RequestMapping("/test/log")
+	@ResponseBody
+	public String logTest () {
+		
+		LOGGER.trace("this is trace log");
+		LOGGER.debug("this is debug log");
+		LOGGER.info("this is info log");
+		LOGGER.warn("this is warn log");
+		LOGGER.error("this is error log");
+		return "this is log test!";
+	}
 	
 	@RequestMapping("/test/config")
 	@ResponseBody
