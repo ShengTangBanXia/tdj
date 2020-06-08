@@ -8,7 +8,8 @@ import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.ResponseBody;
 
-import com.tdj.SpringBootDemo1.vo.ApplicationTest;
+import com.tdj.SpringBootDemo1.models.test.vo.ApplicationTest;
+
 
 @Controller
 @RequestMapping("/test")

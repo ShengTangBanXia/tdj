@@ -1,4 +1,4 @@
-package com.tdj.SpringBootDemo1.vo;
+package com.tdj.SpringBootDemo1.models.test.vo;
 
 import org.springframework.boot.context.properties.ConfigurationProperties;
 import org.springframework.context.annotation.PropertySource;
