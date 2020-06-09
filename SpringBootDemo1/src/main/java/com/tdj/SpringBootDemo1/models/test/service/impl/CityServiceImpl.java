@@ -7,6 +7,8 @@ import java.util.Optional;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import com.github.pagehelper.PageHelper;
+import com.github.pagehelper.PageInfo;
 import com.tdj.SpringBootDemo1.models.test.dao.CityDao;
 import com.tdj.SpringBootDemo1.models.test.entity.City;
 import com.tdj.SpringBootDemo1.models.test.service.CityService;
@@ -28,6 +30,15 @@ public class CityServiceImpl implements CityService {
 	public City getCityByName(String cityName, String localCityName) {
 		// TODO Auto-generated method stub
 		return cityDao.getCityByName(cityName, localCityName);
+	}
+
+	@Override
+	public PageInfo<City> getCitiesByPage(int currentPage, int pageSize, int countryId) {
+		//开启分页
+		PageHelper.startPage(currentPage, pageSize);
+		
+		return new PageInfo<City>(Optional.ofNullable(cityDao.getCitiesByCountryId2(countryId))
+				.orElse(Collections.emptyList()));
 	}
 
 }

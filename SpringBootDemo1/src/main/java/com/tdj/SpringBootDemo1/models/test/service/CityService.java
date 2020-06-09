@@ -2,6 +2,7 @@ package com.tdj.SpringBootDemo1.models.test.service;
 
 import java.util.List;
 
+import com.github.pagehelper.PageInfo;
 import com.tdj.SpringBootDemo1.models.test.entity.City;
 
 public interface CityService {
@@ -10,4 +11,6 @@ public interface CityService {
 	
 	City getCityByName(String cityName, String localCityName);
 	
+	
+	PageInfo<City> getCitiesByPage(int currentPage, int pageSize, int countryId);
 }
