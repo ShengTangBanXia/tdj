@@ -12,8 +12,7 @@ public interface CityService {
 	List <City> getCitiesByCountryId(int countryId);
 	
 	City getCityByName(String cityName, String localCityName);
-	
-	
+		
 	PageInfo<City> getCitiesByPage(int currentPage, int pageSize, int countryId);
 	
 	PageInfo<City> getCitiesBySearchVo (SearchVo searchVo);

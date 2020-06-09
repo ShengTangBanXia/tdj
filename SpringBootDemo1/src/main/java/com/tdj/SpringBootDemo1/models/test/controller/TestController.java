@@ -5,6 +5,7 @@ import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Controller;
+import org.springframework.ui.ModelMap;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.ResponseBody;
 
@@ -14,6 +15,18 @@ import com.tdj.SpringBootDemo1.models.test.vo.ApplicationTest;
 @Controller
 @RequestMapping("/test")
 public class TestController {
+
+	@Autowired
+	private ApplicationTest applicationTest;
+	
+	
+	private final static Logger LOGGER = LoggerFactory.getLogger(TestController.class); 
+	
+	@RequestMapping("/index")
+	public String indexPage (ModelMap modelmap) {
+		modelmap.addAttribute("template", "test/index");
+		return "index";
+	}
 	
 	@Value("${server.port}")
 	private int port;
@@ -24,11 +37,6 @@ public class TestController {
 	@Value("${com.age}")
 	private int age;
 
-	@Autowired
-	private ApplicationTest applicationTest;
-	
-	
-	private final static Logger LOGGER = LoggerFactory.getLogger(TestController.class); 
 	
 	@RequestMapping("/log")
 	@ResponseBody
