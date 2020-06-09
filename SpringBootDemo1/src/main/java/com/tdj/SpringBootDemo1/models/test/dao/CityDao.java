@@ -2,7 +2,9 @@ package com.tdj.SpringBootDemo1.models.test.dao;
 
 import java.util.List;
 
+import org.apache.ibatis.annotations.Insert;
 import org.apache.ibatis.annotations.Mapper;
+import org.apache.ibatis.annotations.Options;
 import org.apache.ibatis.annotations.Select;
 
 import com.tdj.SpringBootDemo1.models.common.vo.SearchVo;
@@ -36,6 +38,11 @@ public interface CityDao {
 			+ "</choose>"
 			+ "</script>")
 	List <City> getCitiesBySearchVo (SearchVo searchVo);
+	
+	@Insert("insert into m_city (city_name, local_city_name, country_id, date_created) " 
+			+ "values(#{cityName}, #{localCityName}, #{countryId}, #{dateCreated})")
+	@Options(useGeneratedKeys = true, keyColumn = "city_id", keyProperty = "cityId")	//通过注解来使用插入数据的主键并映射到实体类中的相应属性
+	void insertCity(City city);
 	
 	
 }

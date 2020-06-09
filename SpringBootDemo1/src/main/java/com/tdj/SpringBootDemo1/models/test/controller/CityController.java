@@ -12,6 +12,7 @@ import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
 import com.github.pagehelper.PageInfo;
+import com.tdj.SpringBootDemo1.models.common.vo.Result;
 import com.tdj.SpringBootDemo1.models.common.vo.SearchVo;
 import com.tdj.SpringBootDemo1.models.test.entity.City;
 import com.tdj.SpringBootDemo1.models.test.service.CityService;
@@ -60,6 +61,15 @@ public class CityController {
 	public PageInfo<City> getCitiesBySearchVo(@RequestBody SearchVo searchVo) {
 		
 		return cityService.getCitiesBySearchVo(searchVo);
+	}
+	
+	/**
+	 * 127.0.0.1/api/city
+	 */
+	@PostMapping(value = "/city", consumes = "application/json")
+	public Result<City> insertCity(@RequestBody City city) {
+		
+		return cityService.insertCity(city);
 	}
 	
 }
