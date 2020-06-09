@@ -16,12 +16,16 @@ import com.tdj.SpringBootDemo1.models.common.vo.SearchVo;
 import com.tdj.SpringBootDemo1.models.test.dao.CityDao;
 import com.tdj.SpringBootDemo1.models.test.entity.City;
 import com.tdj.SpringBootDemo1.models.test.service.CityService;
+import com.tdj.SpringBootDemo1.utils.RedisUtils;
 
 @Service
 public class CityServiceImpl implements CityService {
 
 	@Autowired
 	private CityDao cityDao;
+	
+	@Autowired
+	private RedisUtils redisUtils;
 	
 	@Override
 	public List<City> getCitiesByCountryId(int countryId) {
@@ -76,6 +80,14 @@ public class CityServiceImpl implements CityService {
 
 		cityDao.deleteCity(cityId);		
 		return new Result<Object>(Result.resultStatus.SUCCESS.status, "delete success");
+	}
+
+	@Override
+	public Object migrateCitiesByCountryId(int countryId) {
+
+		List<City> cities = getCitiesByCountryId(countryId);
+		redisUtils.set("cities", cities);
+		return redisUtils.get("cities");
 	}
 
 }

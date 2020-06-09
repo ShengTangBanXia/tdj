@@ -28,7 +28,7 @@ public class CityController {
 	
 	/**
 	 * 
-	 * 127.0.0.1/api/cities/522
+	 * 127.0.0.1/api/cities/522 ----------get
 	 */
 	@RequestMapping("/cities/{countryId}")
 	public List<City> getCitiesByCountryId(@PathVariable int countryId) {
@@ -91,4 +91,14 @@ public class CityController {
 		
 		return cityService.deleteCity(cityId);
 	}
+	
+	/**
+	 *127.0.0.1/api/redis/cities/522 ------------get
+	 */
+	@RequestMapping("/redis/cities/{countryId}")
+	public Object migrateCitiesByCountryId(@PathVariable int countryId) {
+		
+		return cityService.migrateCitiesByCountryId(countryId);
+	}
+	
 }
