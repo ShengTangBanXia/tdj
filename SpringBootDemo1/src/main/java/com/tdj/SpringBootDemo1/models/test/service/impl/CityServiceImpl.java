@@ -9,6 +9,7 @@ import org.springframework.stereotype.Service;
 
 import com.github.pagehelper.PageHelper;
 import com.github.pagehelper.PageInfo;
+import com.tdj.SpringBootDemo1.models.common.vo.SearchVo;
 import com.tdj.SpringBootDemo1.models.test.dao.CityDao;
 import com.tdj.SpringBootDemo1.models.test.entity.City;
 import com.tdj.SpringBootDemo1.models.test.service.CityService;
@@ -38,6 +39,15 @@ public class CityServiceImpl implements CityService {
 		PageHelper.startPage(currentPage, pageSize);
 		
 		return new PageInfo<City>(Optional.ofNullable(cityDao.getCitiesByCountryId2(countryId))
+				.orElse(Collections.emptyList()));
+	}
+
+	@Override
+	public PageInfo<City> getCitiesBySearchVo(SearchVo searchVo) {
+
+		searchVo.initSearchVo();
+		PageHelper.startPage(searchVo.getCurrentPage(), searchVo.getPageSize());
+		return new PageInfo<City>(Optional.ofNullable(cityDao.getCitiesBySearchVo(searchVo))
 				.orElse(Collections.emptyList()));
 	}
 
