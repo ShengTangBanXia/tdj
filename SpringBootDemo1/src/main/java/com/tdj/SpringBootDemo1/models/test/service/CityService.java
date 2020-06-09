@@ -20,4 +20,7 @@ public interface CityService {
 	
 	Result<City> insertCity(City city);
 	
+	Result<City>  updateCity (City city);
+	
+	Result<Object>  deleteCity (int cityId);
 }

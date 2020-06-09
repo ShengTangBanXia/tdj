@@ -7,6 +7,7 @@ import java.util.Optional;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 import com.github.pagehelper.PageHelper;
 import com.github.pagehelper.PageInfo;
@@ -60,6 +61,21 @@ public class CityServiceImpl implements CityService {
 		cityDao.insertCity(city);
 		
 		return new Result<City>(Result.resultStatus.SUCCESS.status, "insert success", city);
+	}
+
+	@Override
+	@Transactional	//添加事务
+	public Result<City>  updateCity(City city) {
+		
+		cityDao.updateCity(city);
+		return new Result<City>(Result.resultStatus.SUCCESS.status, "update success", city);
+	}
+
+	@Override
+	public Result<Object> deleteCity(int cityId) {
+
+		cityDao.deleteCity(cityId);		
+		return new Result<Object>(Result.resultStatus.SUCCESS.status, "delete success");
 	}
 
 }
