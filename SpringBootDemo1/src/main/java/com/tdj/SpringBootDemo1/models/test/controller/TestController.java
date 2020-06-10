@@ -3,6 +3,8 @@ package com.tdj.SpringBootDemo1.models.test.controller;
 import java.util.List;
 import java.util.stream.Collectors;
 
+import javax.servlet.http.HttpServletRequest;
+
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -10,6 +12,7 @@ import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.ModelMap;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
 
 import com.tdj.SpringBootDemo1.models.test.entity.City;
@@ -93,4 +96,14 @@ public class TestController {
 		return sb.toString();
 	}
 	
+	/**
+	 * 127.0.0.1/test/desc?key=fuck
+	 */
+	@RequestMapping("/desc")
+	@ResponseBody
+	public String testDesc (@RequestParam String key, HttpServletRequest request) {
+		
+		String key2 = request.getParameter("key");
+		return "this is a test model desc!!!!" + key + "=======" + key2;
+	}
 }

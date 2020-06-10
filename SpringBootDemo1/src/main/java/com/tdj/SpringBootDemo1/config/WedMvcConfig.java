@@ -5,9 +5,12 @@ import org.springframework.beans.factory.annotation.Value;
 import org.springframework.boot.autoconfigure.AutoConfigureAfter;
 import org.springframework.boot.autoconfigure.web.servlet.WebMvcAutoConfiguration;
 import org.springframework.boot.web.embedded.tomcat.TomcatServletWebServerFactory;
+import org.springframework.boot.web.servlet.FilterRegistrationBean;
 import org.springframework.boot.web.servlet.server.ServletWebServerFactory;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
+
+import com.tdj.SpringBootDemo1.filter.ParameterFilter;
 
 @Configuration
 @AutoConfigureAfter({WebMvcAutoConfiguration.class})
@@ -32,7 +35,14 @@ public class WedMvcConfig {
 		return factory;
 	}
 	
-	
+	@Bean
+	public FilterRegistrationBean<ParameterFilter> filter () {
+		
+		FilterRegistrationBean<ParameterFilter> register = new FilterRegistrationBean<ParameterFilter>();	//注册过滤器
+		register.setFilter(new ParameterFilter());	//设置过滤器  	
+		
+		return register;
+	}
 	
 	
 }
