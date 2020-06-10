@@ -1,5 +1,8 @@
 package com.tdj.SpringBootDemo1.models.test.controller;
 
+import java.util.List;
+import java.util.stream.Collectors;
+
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -9,6 +12,10 @@ import org.springframework.ui.ModelMap;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.ResponseBody;
 
+import com.tdj.SpringBootDemo1.models.test.entity.City;
+import com.tdj.SpringBootDemo1.models.test.entity.Country;
+import com.tdj.SpringBootDemo1.models.test.service.CityService;
+import com.tdj.SpringBootDemo1.models.test.service.CountryService;
 import com.tdj.SpringBootDemo1.models.test.vo.ApplicationTest;
 
 
@@ -19,12 +26,34 @@ public class TestController {
 	@Autowired
 	private ApplicationTest applicationTest;
 	
+	@Autowired
+	private CityService cityService;
+	
+	@Autowired
+	private CountryService countryService;
 	
 	private final static Logger LOGGER = LoggerFactory.getLogger(TestController.class); 
 	
 	@RequestMapping("/index")
 	public String indexPage (ModelMap modelmap) {
+		
+		List<City> cities = cityService.getCitiesByCountryId(522);
+		cities = cities.stream().limit(10).collect(Collectors.toList());	//将cities数据限制在十条
+		Country country = countryService.getCountryByCountryId(522);
+		
+		modelmap.addAttribute("thymeleafTitle", "you are super man!!!!!");
+		modelmap.addAttribute("checked", true);
+		modelmap.addAttribute("currentNumber", 99);
+		modelmap.addAttribute("changeType", "checkbox");
+		modelmap.addAttribute("baiduUrl", "/test/log");
+		modelmap.addAttribute("city", cities.get(0));
+		modelmap.addAttribute("country", country);
+		modelmap.addAttribute("cities", cities);
+		modelmap.addAttribute("updateUrl", "/api/city");
+		modelmap.addAttribute("shopLogo", 
+				"http://cdn.duitang.com/uploads/item/201308/13/20130813115619_EJCWm.thumb.700_0.jpeg");
 		modelmap.addAttribute("template", "test/index");
+		
 		return "index";
 	}
 	
