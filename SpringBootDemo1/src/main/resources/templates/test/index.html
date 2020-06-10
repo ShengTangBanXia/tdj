@@ -2,6 +2,26 @@
  <section style="text-align: center;">
 	Hello world! This is test module index.
 
+	<h3>file upload</h3>
+	<p th:text="${message}" style="color: red;"></p>
+
+	<p>ä¸Šä¼ æ–‡ä»¶ï¼Œä½¿ç”¨multipart/form-dataç±»åž‹</p>
+	<div align="center">
+		<form action="/test/file" method="post" enctype="multipart/form-data" >
+			<input type="file" name="file"> <br>
+			<button type="submit">ä¸Šä¼ </button>
+		</form>	
+		<br>
+		<form action="/test/files" method="post" enctype="multipart/form-data">
+			<input type="file" name="files">
+			<input type="file" name="files">
+			<button type="submit">ä¸Šä¼ </button>
+		</form>
+	</div>
+	<br>
+
+	<p>==================================================================</p>
+
 	<h3>th:text</h3>
 	<h1 th:text="${thymeleafTitle}">this is thymeleaf title</h1>
 	<p th:text="${thymeleafTitle}">this is the thymeleaf ti-tle</p>
@@ -21,7 +41,7 @@
 	<h3>url,href</h3>
 	<a th:href="@{http://www.baidu.com}" target="_blank">Click it to turn to baidu</a><br>
 	<a th:href="${baiduUrl}" target="_blank">Click it to turn to Shop beauty</a><br>
- 	<!-- ·â×°¶¯Ì¬url¡¢url²éÑ¯²ÎÊý --> 
+ 	<!-- å°è£…åŠ¨æ€urlã€urlæŸ¥è¯¢å‚æ•° --> 
     <a th:href="@{'/test/index/'+${city.cityId}}" th:text="${city.cityName}"></a>
 	<a th:href="@{/test/index(pageSize=${city.cityId},currentPage='1')}" th:text="${city.cityName}"></a><br>
 	<img th:src="@{${shopLogo}}"/>
@@ -53,7 +73,7 @@
 	<p>==================================================================</p>
 
 	<h3>post form, th:action, th:object, th:field</h3>
-<!-- ÎÒÃÇ¿ÉÒÔÖ¸¶¨ÊÇGET»¹ÊÇPOSTÇëÇó,ÕâÀïÐèÒª×¢ÒâµÄÊÇÓÐµÄä¯ÀÀÆ÷²¢²»Ö§³ÖPUTÇëÇó,SpringMVCÎªÎÒÃÇÌá¹©ÁËÒ»ÖÖ½â¾ö·½°¸,Ìí¼ÓhiddenÖ¸¶¨method -->
+<!-- æˆ‘ä»¬å¯ä»¥æŒ‡å®šæ˜¯GETè¿˜æ˜¯POSTè¯·æ±‚,è¿™é‡Œéœ€è¦æ³¨æ„çš„æ˜¯æœ‰çš„æµè§ˆå™¨å¹¶ä¸æ”¯æŒPUTè¯·æ±‚,SpringMVCä¸ºæˆ‘ä»¬æä¾›äº†ä¸€ç§è§£å†³æ–¹æ¡ˆ,æ·»åŠ hiddenæŒ‡å®šmethod -->
     <form th:action="${updateCityUri}" method="post" th:object="${city}">
         <input type="hidden" name="_method" value="PUT">
         City Id:			<input th:field="*{cityId}" readonly/>

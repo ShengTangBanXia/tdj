@@ -1,5 +1,7 @@
 package com.tdj.SpringBootDemo1.models.test.controller;
 
+import java.io.File;
+import java.io.IOException;
 import java.util.List;
 import java.util.stream.Collectors;
 
@@ -11,9 +13,12 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.ModelMap;
+import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
+import org.springframework.web.multipart.MultipartFile;
+import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
 import com.tdj.SpringBootDemo1.models.test.entity.City;
 import com.tdj.SpringBootDemo1.models.test.entity.Country;
@@ -37,6 +42,48 @@ public class TestController {
 	
 	private final static Logger LOGGER = LoggerFactory.getLogger(TestController.class); 
 	
+	@PostMapping(value = "/files", consumes = "multipart/form-data")
+	public String uploadFiles (RedirectAttributes redirectAttributes, @RequestParam MultipartFile [] files) {
+		
+		boolean tag = true; 	//用来标记是否所有文件都为空
+
+		for (MultipartFile file : files) {
+			if (file.isEmpty()) continue;
+			try {
+				if (tag) tag = false;
+				String destPath = "C:\\Users\\anai\\Desktop\\test1\\" + file.getOriginalFilename();
+				File destFile = new File(destPath);
+				file.transferTo(destFile);
+			} catch (IllegalStateException | IOException e) {
+				e.printStackTrace();
+				redirectAttributes.addFlashAttribute("message", "Upload file fail !!!");
+				break;
+			}	
+		}
+		if (!tag) redirectAttributes.addFlashAttribute("message", "Upload file success !!!");
+		else	redirectAttributes.addFlashAttribute("message", "Please select more than one file !!!");
+		return "redirect:/test/index";	
+	}
+	
+	
+	@PostMapping(value = "/file", consumes = "multipart/form-data")
+	public String uploadFile (RedirectAttributes redirectAttributes, @RequestParam MultipartFile file) {
+		
+		if (file.isEmpty())	redirectAttributes.addFlashAttribute("message", "Please select file !!!");
+		else {
+				try {
+					String destPath = "C:\\Users\\anai\\Desktop\\test\\" + file.getOriginalFilename();
+					File destFile = new File(destPath);
+					file.transferTo(destFile);
+					redirectAttributes.addFlashAttribute("message", "Upload file success !!!");
+				} catch (IllegalStateException | IOException e) {
+					e.printStackTrace();
+					redirectAttributes.addFlashAttribute("message", "Upload file fail !!!");
+				}			
+		}
+		return "redirect:/test/index";
+	}
+	
 	@RequestMapping("/index")
 	public String indexPage (ModelMap modelmap) {
 		
@@ -55,7 +102,7 @@ public class TestController {
 		modelmap.addAttribute("updateUrl", "/api/city");
 		modelmap.addAttribute("shopLogo", 
 				"http://cdn.duitang.com/uploads/item/201308/13/20130813115619_EJCWm.thumb.700_0.jpeg");
-//		modelmap.addAttribute("template", "test/index");
+		modelmap.addAttribute("template", "test/index");
 		
 		return "index";
 	}
