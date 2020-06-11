@@ -10,6 +10,7 @@ import org.springframework.boot.web.servlet.FilterRegistrationBean;
 import org.springframework.boot.web.servlet.server.ServletWebServerFactory;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
+import org.springframework.util.ResourceUtils;
 import org.springframework.web.servlet.config.annotation.InterceptorRegistry;
 import org.springframework.web.servlet.config.annotation.ResourceHandlerRegistry;
 import org.springframework.web.servlet.config.annotation.WebMvcConfigurer;
@@ -66,11 +67,9 @@ public class WebMvcConfig implements WebMvcConfigurer {
 
 		String systemName = System.getProperty("os.name");
 		if (systemName.toLowerCase().startsWith("win"))
-			registry.addResourceHandler(resourceConfigBean.getResourcePath())
-			.addResourceLocations("file:" + resourceConfigBean.getLocalPathForWindows());
+			registry.addResourceHandler(resourceConfigBean.getResourcePathPattern()).addResourceLocations(ResourceUtils.FILE_URL_PREFIX + resourceConfigBean.getLocalPathForWindows());
 		else
-			registry.addResourceHandler(resourceConfigBean.getResourcePath())
-			.addResourceLocations("file:" + resourceConfigBean.getLocalPathForLinux());
+			registry.addResourceHandler(resourceConfigBean.getResourcePathPattern()).addResourceLocations(ResourceUtils.FILE_URL_PREFIX + resourceConfigBean.getLocalPathForLinux());
 		
 	}
 	

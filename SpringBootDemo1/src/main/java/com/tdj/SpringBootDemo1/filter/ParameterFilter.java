@@ -59,6 +59,7 @@ public class ParameterFilter implements Filter{
 			public String[] getParameterValues(String name) {
 				
 				String [] values = httpRequest.getParameterValues(name);
+				if (values == null) return values;
 				for (int i = 0; i < values.length; i++) {
 					String temp = values[i];
 					if (StringUtils.isNotBlank(temp) && temp.contains("fuck")) {	//判断路径参数是否为空以及是否包含违规字符串
