@@ -11,6 +11,7 @@ import org.springframework.boot.web.servlet.server.ServletWebServerFactory;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.web.servlet.config.annotation.InterceptorRegistry;
+import org.springframework.web.servlet.config.annotation.ResourceHandlerRegistry;
 import org.springframework.web.servlet.config.annotation.WebMvcConfigurer;
 
 import com.tdj.SpringBootDemo1.filter.ParameterFilter;
@@ -22,6 +23,9 @@ public class WebMvcConfig implements WebMvcConfigurer {
 
 	@Value("${server.http.port}")
 	private int httpPort;
+	
+	@Autowired
+	private ResourceConfigBean resourceConfigBean;
 	
 	@Autowired
 	private UrlInterceptor urlInterceptor;
@@ -55,6 +59,19 @@ public class WebMvcConfig implements WebMvcConfigurer {
 	public void addInterceptors(InterceptorRegistry registry) {
 
 		registry.addInterceptor(urlInterceptor).addPathPatterns("/**");
+	}
+
+	@Override
+	public void addResourceHandlers(ResourceHandlerRegistry registry) {
+
+		String systemName = System.getProperty("os.name");
+		if (systemName.toLowerCase().startsWith("win"))
+			registry.addResourceHandler(resourceConfigBean.getResourcePath())
+			.addResourceLocations("file:" + resourceConfigBean.getLocalPathForWindows());
+		else
+			registry.addResourceHandler(resourceConfigBean.getResourcePath())
+			.addResourceLocations("file:" + resourceConfigBean.getLocalPathForLinux());
+		
 	}
 	
 	

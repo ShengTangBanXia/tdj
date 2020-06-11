@@ -69,10 +69,12 @@ public class TestController {
 	@PostMapping(value = "/file", consumes = "multipart/form-data")
 	public String uploadFile (RedirectAttributes redirectAttributes, @RequestParam MultipartFile file) {
 		
+		String resourcePath = "/testUpload/" + file.getOriginalFilename();
 		if (file.isEmpty())	redirectAttributes.addFlashAttribute("message", "Please select file !!!");
 		else {
 				try {
-					String destPath = "C:\\Users\\anai\\Desktop\\test\\" + file.getOriginalFilename();
+					String destPath = "C:/Users/anai/Desktop/test/" + file.getOriginalFilename();
+//					String destPath = "/testUpload"+ File.separator + file.getOriginalFilename();
 					File destFile = new File(destPath);
 					file.transferTo(destFile);
 					redirectAttributes.addFlashAttribute("message", "Upload file success !!!");
@@ -81,6 +83,8 @@ public class TestController {
 					redirectAttributes.addFlashAttribute("message", "Upload file fail !!!");
 				}			
 		}
+		
+		redirectAttributes.addFlashAttribute("resourcePath", resourcePath);
 		return "redirect:/test/index";
 	}
 	
@@ -100,8 +104,10 @@ public class TestController {
 		modelmap.addAttribute("country", country);
 		modelmap.addAttribute("cities", cities);
 		modelmap.addAttribute("updateUrl", "/api/city");
+//		modelmap.addAttribute("shopLogo", 
+//				"http://cdn.duitang.com/uploads/item/201308/13/20130813115619_EJCWm.thumb.700_0.jpeg");
 		modelmap.addAttribute("shopLogo", 
-				"http://cdn.duitang.com/uploads/item/201308/13/20130813115619_EJCWm.thumb.700_0.jpeg");
+				"/testUpload/person.jpg");
 		modelmap.addAttribute("template", "test/index");
 		
 		return "index";
