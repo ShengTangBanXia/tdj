@@ -55,11 +55,9 @@
 				turn to baidu</a><br> <a th:href="${baiduUrl}" target="_blank">Click
 				it to turn to Shop beauty</a><br>
 			<!-- 封装动态url、url查询参数 -->
-			<a th:href="@{'/test/index/'+${city.cityId}}"
-				th:text="${city.cityName}"></a> <a
-				th:href="@{/test/index(pageSize=${city.cityId},currentPage='1')}"
-				th:text="${city.cityName}"></a><br> <img
-				th:src="@{${shopLogo}}" />
+			<a th:href="@{'/test/index/'+${city.cityId}}" th:text="${city.cityName}"></a> 
+			<a th:href="@{/test/index(pageSize=${city.cityId},currentPage='1')}" th:text="${city.cityName}"></a><br> 
+			<img th:src="@{${shopLogo}}" class="img-circle profile_img" align="middle"/>
 			<p>==================================================================</p>
 
 			<h3>th:object</h3>

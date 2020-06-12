@@ -32,17 +32,17 @@
             
           	<div>
 				<input class="form-control input-val" type="text" value="" placeholder="请输入验证码(不区分大小写)" 
-                   	style="float:left; width:68%;">
+                   	style="float:left; width:68%; margin-bottom: 0px;">
           			<canvas id="canvas" width="106" height="34"></canvas>
 			</div>
             <br>
-            <div style="text-align: left;">
+            <div  style="text-align:left; margin-top: 5px; margin-left: 3px;">
                	<input type="checkbox" lay-filter="filter" name="rememberMe" style="float:left;height: 21px;font-size: x-small;"
                	lay-skin="primary" title="30天内自动登录"> <p align="left"> &nbsp;30天内自动登录  </p>
 			</div>
             
-            <div style="vertical-align: middle;text-align: center;">
-              <a class="btn btn-default submit" href="javascript:void(0);" id="loginButton" style="text-align: center;width: 100px;font-size: 20px;color: inactivecaptiontext;"> 登录 </a>
+            <div style="text-align: center;">
+              <a class="btn btn-default submit" href="javascript:void(0);" id="loginButton"> 登录 </a>
               <!-- <a class="reset_pass" href="#" style="text-align: center;width: 100px;"> 忘记密码 </a> -->
             </div>
 
@@ -110,8 +110,8 @@ function login() {
 		data : JSON.stringify(user),
 		success : function (data) {
 			if (data.status == 200) {
-				layer.msg(data.message, {icon: 0});
-				//location.href = "/index";
+				//layer.msg(data.message, {icon: 0});
+				location.href = "/common/dashboard";
 			} else {
 				layer.msg(data.message, {icon: 0});
 			}
