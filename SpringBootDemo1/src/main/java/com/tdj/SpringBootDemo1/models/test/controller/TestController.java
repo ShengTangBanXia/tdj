@@ -215,12 +215,10 @@ public class TestController {
 		modelmap.addAttribute("country", country);
 		modelmap.addAttribute("cities", cities);
 		modelmap.addAttribute("updateUrl", "/api/city");
-//		modelmap.addAttribute("shopLogo", 
-//				"http://cdn.duitang.com/uploads/item/201308/13/20130813115619_EJCWm.thumb.700_0.jpeg");
+		modelmap.addAttribute("shopLogo", 
+				"http://cdn.duitang.com/uploads/item/201308/13/20130813115619_EJCWm.thumb.700_0.jpeg");
 //		modelmap.addAttribute("shopLogo", 
 //				"/testUpload/person.jpg");
-		modelmap.addAttribute("shopLogo", 
-				"/testUpload/person.jpg");
 		modelmap.addAttribute("template", "test/index");
 		
 		return "index";

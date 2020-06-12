@@ -1,36 +1,64 @@
+
 <!DOCTYPE html>
-<html xmlns="http://www.w3.org/1999/xhtml" xmlns:th="http://www.thymeleaf.org"  
-      xmlns:sec="http://www.thymeleaf.org/thymeleaf-extras-springsecurity3"  
-      xmlns:shiro="http://www.pollix.at/thymeleaf/shiro">  
-	<head>
-		<TITLE>SpringDemo</TITLE>
-		<meta http-equiv="Content-Type" content="text/html; charset=UTF-8"/>
-		<META name="description" content="THORNBIRD.COM"/>
+<html xmlns="http://www.w3.org/1999/xhtml"
+	xmlns:th="http://www.thymeleaf.org"
+	xmlns:sec="http://www.thymeleaf.org/thymeleaf-extras-springsecurity3"
+	xmlns:shiro="http://www.pollix.at/thymeleaf/shiro" lang="en">
+<head>
+<TITLE>SpringDemo</TITLE>
+<meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
 
-		<!-- 引入css -->
-        <link th:href="@{http://cdn.bootcss.com/bootstrap/3.3.0/css/bootstrap.min.css}" rel="stylesheet" >
-		<!-- <link th:href="${'/css/sbDemo.css'}" rel="stylesheet" /> -->
+<META name="description" content="THORNBIRD.COM" />
+<META name="description" content="HHHHH.COM" />
 
-        <!-- 引入js -->
-	    <script th:src="@{http://cdn.bootcss.com/jquery/1.11.1/jquery.min.js}"></script>  
-	    <script th:src="@{http://cdn.bootcss.com/bootstrap/3.3.0/js/bootstrap.min.js}"></script>
-	    <!-- <script th:src="${'/js/sbDemo.js'}" type="text/javascript"></script> -->		
-	</head>
 
-	<body>
-		<div id="wrapper">
-			<!--header-->
-			<div th:replace="fragments/header :: header"></div>
+<!-- Bootstrap -->
+<link th:href="${'/vendors/bootstrap/dist/css/bootstrap.min.css'}"
+	rel="stylesheet" />
 
-			<!-- body -->
-			<div class='mainBody' style="margin-top: 20px;">
-				<div th:if="${template}">
-					<div th:replace="${template}"></div>
-			    </div>
+<!-- Font Awesome -->
+<link th:href="${'/vendors/font-awesome/css/font-awesome.min.css'}"
+	rel="stylesheet" />
+
+<!-- Custom Theme Style -->
+<link th:href="${'/build/css/custom.min.css'}" rel="stylesheet" />
+
+</head>
+
+<body class="nav-md">
+	<div class="container body">
+		<div class="main_container">
+			<!-- left model -->
+			<div th:replace="fragments/sideBar"></div>
+
+			<!-- header model -->
+			<div th:replace="fragments/header"></div>
+
+			<!-- body model -->
+			<div th:if="${template}">
+				<div th:replace="${template}"></div>
 			</div>
 
-			<!--footer-->
-			<div th:replace="fragments/footer :: footer"></div>
+			<!-- footer model -->
+			<div th:replace="fragments/footer"></div>
 		</div>
-	</body>
+	</div>
+
+	<!-- jQuery -->
+	<script th:src="${'/vendors/jquery/dist/jquery.min.js'}"
+		type="text/javascript"></script>
+
+	<!-- Bootstrap -->
+	<script
+		th:src="${'/vendors/bootstrap/dist/js/bootstrap.bundle.min.js'}"
+		type="text/javascript"></script>
+
+	<!-- Custom Theme Scripts -->
+	<script th:src="${'/build/js/custom.min.js'}" type="text/javascript"></script>
+
+
+</body>
+
 </html>
+
+
