@@ -31,5 +31,10 @@ public class UserController {
 //		
 //		return userService.getUserByUserName(userName);
 //	}
+	@PostMapping(value = "/login", consumes = "application/json")
+	public Result<User> login(@RequestBody User user) {
+		
+		return userService.login(user);
+	}
 	
 }

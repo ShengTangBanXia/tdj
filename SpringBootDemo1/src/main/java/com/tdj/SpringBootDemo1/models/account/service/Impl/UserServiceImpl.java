@@ -26,7 +26,7 @@ public class UserServiceImpl implements UserService{
 		
 		User temporaryUser = getUserByUserName(user.getUserName());
 		
-		if (temporaryUser != null) {	//判断数据库里是否有此用户名，即判断用户名是否重复
+		if (temporaryUser != null) {	//判断数据库里是否有此用户，来判断用户名是否重复
 			return new Result <User> (resultStatus.FAILED.status, "Duplicate user name, please re-enter!!!");
 		}
 		
@@ -41,6 +41,17 @@ public class UserServiceImpl implements UserService{
 	public User getUserByUserName(String userName) {
 		
 		return userDao.getUserByUserName(userName);
+	}
+
+	@Override
+	public Result<User> login(User user) {
+		
+		User temporaryUser = getUserByUserName(user.getUserName());
+		if (temporaryUser == null 
+			|| !temporaryUser.getPassword().equals(MD5Util.getMD5(user.getPassword()))) {	//判断数据库里是否有此用户,以及密码是否相等
+			return new Result <User> (resultStatus.FAILED.status, "The user name does not exist or the password is wrong!!!");
+		}
+		return new Result <User> (resultStatus.SUCCESS.status, "Login succeeded!", temporaryUser);
 	}
 
 }
