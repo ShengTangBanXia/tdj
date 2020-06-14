@@ -13,11 +13,12 @@ import org.springframework.stereotype.Service;
 import com.github.pagehelper.PageHelper;
 import com.github.pagehelper.PageInfo;
 import com.tdj.SpringBootDemo1.models.account.dao.UserDao;
+import com.tdj.SpringBootDemo1.models.account.dao.UserRoleDao;
+import com.tdj.SpringBootDemo1.models.account.entity.Role;
 import com.tdj.SpringBootDemo1.models.account.entity.User;
 import com.tdj.SpringBootDemo1.models.account.service.UserService;
 import com.tdj.SpringBootDemo1.models.common.vo.Result;
 import com.tdj.SpringBootDemo1.models.common.vo.Result.resultStatus;
-import com.tdj.SpringBootDemo1.models.test.entity.City;
 import com.tdj.SpringBootDemo1.models.common.vo.SearchVo;
 import com.tdj.SpringBootDemo1.utils.MD5Util;
 
@@ -26,6 +27,9 @@ public class UserServiceImpl implements UserService{
 
 	@Autowired
 	private UserDao userDao;
+	
+	@Autowired
+	private UserRoleDao userRoleDao;
 	
 	@Override
 	@Transactional	//添加事务，在出现异常时可回滚
@@ -40,6 +44,14 @@ public class UserServiceImpl implements UserService{
 		user.setCreateDate(new Date());	//设置日期
 		user.setPassword(MD5Util.getMD5(user.getPassword()));	//利用MD5对密码进行加密
 		userDao.insertUser(user);	//向数据库中插入用户
+		
+		userRoleDao.deleteRolesByUserId(user.getUserId());	//删除中间表信息
+		List<Role> roles = user.getRoles();		//获取页面设置的roles信息
+		if (roles != null && roles.size() > 0) {	//若roles信息不为空，更新roles信息
+			for (Role role : roles) {			
+				userRoleDao.insertUserRole(user.getUserId(), role.getRoleId());
+			}
+		}
 		
 		return new Result <User> (resultStatus.SUCCESS.status, "Insert Success!", user);
 	}

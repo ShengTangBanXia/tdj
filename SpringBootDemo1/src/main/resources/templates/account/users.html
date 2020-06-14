@@ -156,11 +156,64 @@ $(document).ready(function() {	//页面加载函数，页面加载时执行
 	});
 });
 
+//添加user
+function insertUser() {
+	var user = {};
+	user.userName = $("#userNameForAddPage").val();
+	user.password = $("#passwordForAddPage").val();
+	var roles = new Array();
+	$.each($("input[name='roleForAddPage']"), function(){
+		if(this.checked){
+			var role = {};
+			role.roleId = $(this).val();
+			roles.push(role);
+		}
+	});
+	user.roles = roles;
+
+	$.ajax({
+		url : "/api/user",
+		type : "post",
+		contentType: "application/json",
+		data : JSON.stringify(user),
+		success : function (data) {
+			if (data.status == 200) {
+				initTable(DEFAULT_PAGE_SIZE);
+			} else {
+				layer.msg(data.message, {icon: 0});
+			}
+		},
+		error : function (data) {
+			layer.msg(data.responseText, {icon: 0});
+		}
+	});
+}
+
 //初始化新增按钮弹出的模态框
 function initUserAdd() {
 	$("#userNameForAddPage").val("");
 	$("#passwordForAddPage").val("");
 	initRoles("rolesForAddPage", "roleForAddPage");
+}
+
+function initRoles(rolesDiv, roleName) {
+	$("#" + rolesDiv + "").empty();
+	$.ajax({
+		url : "/api/roles",
+		type : "get",
+		contentType: "application/json",
+		success : function (rs) {
+			$("#" + rolesDiv + "").append("<label class='middle'>");
+			$.each(rs, function(i, value) {
+				$("#" + rolesDiv + "").append("<input name='"+ roleName + "' value='" + 
+						value.roleId +"' type='checkbox'>" + value.roleName + "&nbsp;&nbsp;");
+			});
+			$("#" + rolesDiv + "").append("</label>");
+		},
+		error : function (data) {
+			layer.alert(data.responseText, {icon: 0});
+		}
+	});
 }
 
 //初始化表结构
