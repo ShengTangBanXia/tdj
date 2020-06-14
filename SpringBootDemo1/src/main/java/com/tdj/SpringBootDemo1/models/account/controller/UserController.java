@@ -6,9 +6,11 @@ import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
+import com.github.pagehelper.PageInfo;
 import com.tdj.SpringBootDemo1.models.account.entity.User;
 import com.tdj.SpringBootDemo1.models.account.service.UserService;
 import com.tdj.SpringBootDemo1.models.common.vo.Result;
+import com.tdj.SpringBootDemo1.models.common.vo.SearchVo;
 
 @RestController
 @RequestMapping("/api")
@@ -35,6 +37,15 @@ public class UserController {
 	public Result<User> login(@RequestBody User user) {
 		
 		return userService.login(user);
+	}
+	
+	/**
+	 * 127.0.0.1/api/users ------------- post request
+	 */
+	@PostMapping(value = "/users", consumes = "application/json")
+	public PageInfo<User> getUsersBySearchVo(@RequestBody SearchVo searchVo) {
+		
+		return userService.getUsersBySearchVo(searchVo);
 	}
 	
 }

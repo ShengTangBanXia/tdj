@@ -71,9 +71,12 @@
 			<h3>th:each</h3>
 			<div style="text-align: center">
 				<table border="1" style="margin: auto;" width='60%'>
-					<th>cityId</th>
-					<th>cityName</th>
-					<th>countryId</th>
+					<tr>
+						<th>cityId</th>
+						<th>cityName</th>
+						<th>countryId</th>
+					
+					</tr>
 					<tr th:each="city : ${cities}">
 						<td th:text="${city.cityId}"></td>
 						<td th:text="${city.cityName}"></td>

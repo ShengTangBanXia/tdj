@@ -1,17 +1,24 @@
 package com.tdj.SpringBootDemo1.models.account.service.Impl;
 
+import java.util.Collections;
 import java.util.Date;
+import java.util.List;
+import java.util.Optional;
 
 import javax.transaction.Transactional;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import com.github.pagehelper.PageHelper;
+import com.github.pagehelper.PageInfo;
 import com.tdj.SpringBootDemo1.models.account.dao.UserDao;
 import com.tdj.SpringBootDemo1.models.account.entity.User;
 import com.tdj.SpringBootDemo1.models.account.service.UserService;
 import com.tdj.SpringBootDemo1.models.common.vo.Result;
 import com.tdj.SpringBootDemo1.models.common.vo.Result.resultStatus;
+import com.tdj.SpringBootDemo1.models.test.entity.City;
+import com.tdj.SpringBootDemo1.models.common.vo.SearchVo;
 import com.tdj.SpringBootDemo1.utils.MD5Util;
 
 @Service
@@ -52,6 +59,16 @@ public class UserServiceImpl implements UserService{
 			return new Result <User> (resultStatus.FAILED.status, "The user name does not exist or the password is wrong!!!");
 		}
 		return new Result <User> (resultStatus.SUCCESS.status, "Login succeeded!", temporaryUser);
+	}
+
+	@Override
+	public PageInfo<User> getUsersBySearchVo(SearchVo searchVo) {
+
+		searchVo.initSearchVo();	//初始化分页
+		PageHelper.startPage(searchVo.getCurrentPage(), searchVo.getPageSize());	//开启分页
+		
+		return new PageInfo<User>(Optional.ofNullable(userDao.getUsersBySearchVo(searchVo))
+				.orElse(Collections.emptyList()));
 	}
 
 }
