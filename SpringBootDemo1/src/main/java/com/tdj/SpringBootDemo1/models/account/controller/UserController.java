@@ -1,7 +1,11 @@
 package com.tdj.SpringBootDemo1.models.account.controller;
 
+
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.web.bind.annotation.DeleteMapping;
+import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
@@ -46,6 +50,33 @@ public class UserController {
 	public PageInfo<User> getUsersBySearchVo(@RequestBody SearchVo searchVo) {
 		
 		return userService.getUsersBySearchVo(searchVo);
+	}
+	
+	/**
+	 *127.0.0.1/api/user/14
+	 */
+	@RequestMapping("/user/{userId}")
+	public User getUserByUserId(@PathVariable int userId) {
+		
+		return userService.getUserByUserId(userId);
+	}
+	
+	/**
+	 * 127.0.0.1/api/user ------------- put request
+	 */
+	@PutMapping(value = "/user", consumes = "application/json")
+	public Result<User> updateUser(@RequestBody User user) {
+		
+		return userService.updateUser(user);
+	}
+	
+	/**
+	 * 127.0.0.1/api/user/13 ------------- delete request
+	 */
+	@DeleteMapping("/user/{userId}")
+	public Result<Object> deleteUser(@PathVariable int userId) {
+		
+		return userService.deleteUser(userId);
 	}
 	
 }

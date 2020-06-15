@@ -5,12 +5,16 @@ import java.util.List;
 import org.apache.ibatis.annotations.Delete;
 import org.apache.ibatis.annotations.Insert;
 import org.apache.ibatis.annotations.Mapper;
+import org.apache.ibatis.annotations.One;
 import org.apache.ibatis.annotations.Options;
+import org.apache.ibatis.annotations.Result;
+import org.apache.ibatis.annotations.Results;
 import org.apache.ibatis.annotations.Select;
 import org.apache.ibatis.annotations.Update;
 
 import com.tdj.SpringBootDemo1.models.common.vo.SearchVo;
 import com.tdj.SpringBootDemo1.models.test.entity.City;
+import com.tdj.SpringBootDemo1.models.test.entity.Country;
 
 @Mapper
 public interface CityDao {
@@ -21,6 +25,11 @@ public interface CityDao {
 	List <City> getCitiesByCountryId2(int countryId);
 	
 	@Select("select * from m_city where city_name=#{cityName} and local_city_name=#{localCityName}")
+	@Results(id = "cityResult", value = {
+			@Result(column = "country_id", property = "countryId"), 
+			@Result(column = "country_id", property = "country", 
+			javaType = Country.class,
+			one = @One(select = "com.tdj.SpringBootDemo1.models.test.dao.CountryDao.getCountryByCountryId") )})
 	City getCityByName(String cityName, String localCityName);
 	
 	@Select("<script>" + 

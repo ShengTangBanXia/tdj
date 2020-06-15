@@ -83,4 +83,42 @@ public class UserServiceImpl implements UserService{
 				.orElse(Collections.emptyList()));
 	}
 
+	@Override
+	public User getUserByUserId(int userId) {
+
+		return userDao.getUserByUserId(userId);
+	}
+
+	@Override
+	@Transactional	//添加事务，在出现异常时可回滚
+	public Result<User> updateUser(User user) {
+		
+		User temporaryUser = getUserByUserName(user.getUserName());
+		
+		if (temporaryUser != null) {	//判断数据库里是否有此用户，来判断用户名是否重复
+			return new Result <User> (resultStatus.FAILED.status, "Duplicate user name, please re-enter!!!");
+		}
+		
+		userDao.updateUser(user);	//修改数据
+		
+		userRoleDao.deleteRolesByUserId(user.getUserId());	//删除中间表信息
+		List<Role> roles = user.getRoles();		//获取页面设置的roles信息
+		if (roles != null && roles.size() > 0) {	//若roles信息不为空，更新roles信息
+			for (Role role : roles) {			
+				userRoleDao.insertUserRole(user.getUserId(), role.getRoleId());
+			}
+		}
+		
+		return new Result <User> (resultStatus.SUCCESS.status, "Update Success!", user);
+	}
+
+	@Override
+	public Result<Object> deleteUser(int userId) {
+		
+		userDao.deleteUser(userId);
+		userRoleDao.deleteRolesByUserId(userId);
+		
+		return new Result <Object> (resultStatus.SUCCESS.status, "Delete Success!");
+	}
+
 }

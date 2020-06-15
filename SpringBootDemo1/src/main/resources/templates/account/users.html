@@ -115,6 +115,7 @@
 </div>
 
 <div th:replace="account/userAdd :: userAdd"></div>
+<div th:replace="account/userEdit :: userEdit"></div>
 
 
 
@@ -154,7 +155,91 @@ $(document).ready(function() {	//页面加载函数，页面加载时执行
 	$("#userAddBtn").bind("click", function() {
 		insertUser();
 	});
+	
+	$("#userEditBtn").bind("click", function() {
+		updateUser();
+	});
 });
+
+function deleteUser (userId) {
+	
+	bootbox.confirm("Are you sure?", function(result) {
+		if(result) {
+			$.ajax({
+				url : "/api/user/" + userId,
+				type : "delete",
+				contentType: "application/json",
+				success : function (data) {
+					if (data.status == 200) {
+						initTable(DEFAULT_PAGE_SIZE);
+					} else {
+						layer.msg(data.message, {icon: 0});
+					}
+				},
+				error : function (data) {
+					layer.msg(data.responseText, {icon: 0});
+				}
+			});
+		}
+	});
+	
+}
+
+
+//修改 user
+function updateUser() {
+	var user = {};
+	user.userName = $("#userNameForEditPage").val();
+	user.userId = $("#userIdForEditPage").val();
+	var roles = new Array();
+	$.each($("input[name='roleForEditPage']"), function(){
+		if(this.checked){
+			var role = {};
+			role.roleId = $(this).val();
+			roles.push(role);
+		}
+	});
+	user.roles = roles;
+
+	$.ajax({
+		url : "/api/user",
+		type : "put",
+		contentType: "application/json",
+		data : JSON.stringify(user),
+		success : function (data) {
+			if (data.status == 200) {
+				initTable(DEFAULT_PAGE_SIZE);
+			} else {
+				layer.msg(data.message, {icon: 0});
+			}
+		},
+		error : function (data) {
+			layer.msg(data.responseText, {icon: 0});
+		}
+	});
+}
+
+//初始化编辑页面
+function initEditModal(userId) {
+	initRoles("rolesForEditPage", "roleForEditPage");
+
+	$.ajax({
+		url : "/api/user/" + userId,
+		type : "get",
+		contentType: "application/json",
+		success : function (rs) {
+			$("#userIdForEditPage").val(rs.userId);
+			$("#userNameForEditPage").val(rs.userName);
+			$.each(rs.roles, function(i, item){
+				$("input[name='roleForEditPage'][value=" + item.roleId + "]")
+					.attr("checked","checked");
+			});
+		},
+		error : function (data) {
+			layer.alert(data.responseText, {icon: 0});
+		}
+	});
+}
 
 //添加user
 function insertUser() {
@@ -162,10 +247,11 @@ function insertUser() {
 	user.userName = $("#userNameForAddPage").val();
 	user.password = $("#passwordForAddPage").val();
 	var roles = new Array();
-	$.each($("input[name='roleForAddPage']"), function(){
+	$.each($("input[name='roleForAddPage']"), function(){	//因为初始化时所有的role的input框的name一样，
+															//故可以通过name选择器进行遍历选出勾选的role
 		if(this.checked){
 			var role = {};
-			role.roleId = $(this).val();
+			role.roleId = $(this).val();	
 			roles.push(role);
 		}
 	});
@@ -199,14 +285,14 @@ function initUserAdd() {
 function initRoles(rolesDiv, roleName) {
 	$("#" + rolesDiv + "").empty();
 	$.ajax({
-		url : "/api/roles",
+		url : "/api/roles",	///从数据库拿所有的role
 		type : "get",
 		contentType: "application/json",
-		success : function (rs) {
+		success : function (rs) {	//拿到后，对页面进行渲染
 			$("#" + rolesDiv + "").append("<label class='middle'>");
-			$.each(rs, function(i, value) {
+			$.each(rs, function(i, role) {	//遍历数据，有多少role就添加多少个input
 				$("#" + rolesDiv + "").append("<input name='"+ roleName + "' value='" + 
-						value.roleId +"' type='checkbox'>" + value.roleName + "&nbsp;&nbsp;");
+						role.roleId +"' type='checkbox'>" + role.roleName + "&nbsp;&nbsp;");
 			});
 			$("#" + rolesDiv + "").append("</label>");
 		},
@@ -303,9 +389,9 @@ function TData(userId, userName, password, createDate) {
 	this.password = password;
 	this.createDate = createDate;
 	this.operate = function () {
-		return "<a href='#' class='btn_editcolor' " + 
+		return "<a href='#' class='btn_editcolor' data-toggle='modal' data-target='#userEditModal'" +
 			"onclick='initEditModal(\"" + userId + "\")'>编辑</a>&nbsp;" + 
-			"<a href='javascript:void(0);' onclick='deleteRole(\"" + userId + "\")' class='btn_editcolor'>删除</a>";
+			"<a href='javascript:void(0);' onclick='deleteUser(\"" + userId + "\")' class='btn_editcolor'>删除</a>";
 	}
 }
 
