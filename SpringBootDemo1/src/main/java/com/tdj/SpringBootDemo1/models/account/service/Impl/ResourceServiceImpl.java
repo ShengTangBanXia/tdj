@@ -30,26 +30,31 @@ public class ResourceServiceImpl implements ResourceService {
 	@Override
 	@Transactional
 	public Result<Resource> editResource(Resource resource) {
-		if (resource == null) {
-			return new Result<Resource>(resultStatus.FAILED.status, "resource info is null");
+		
+		Resource tempResource = resourceDao.getResourceByResourceName(resource.getResourceName());
+		String message = "";
+		if (tempResource != null && tempResource.getResourceId() != resource.getResourceId()) {
+			return new Result<Resource>(resultStatus.FAILED.status, "Resource name is repeat!!!");
 		}
 
 		// 添加 resource
-		if (resource.getResourceId() > 0) {
-			resourceDao.updateResource(resource);
-		} else {
-			resourceDao.addResource(resource);
+		if (resource.getResourceId() > 0) {	//说明是修改操作
+			resourceDao.updateResource(resource);	//修改数据
+			roleResourceDao.deletRoleResourceByResourceId(resource.getResourceId());	//删除中间表数据
+			message = "Update Success!";
+		} else {	//说明是添加操作
+			resourceDao.addResource(resource);	//添加数据
+			message = "Insert Success!";
 		}
 
-		// 添加 roleResource
-		roleResourceDao.deletRoleResourceByResourceId(resource.getResourceId());
+		// 添加 roleResource即添加中间表数据
 		if (resource.getRoles() != null && !resource.getRoles().isEmpty()) {
 			for (Role role : resource.getRoles()) {
 				roleResourceDao.addRoleResource(role.getRoleId(), resource.getResourceId());
 			}
 		}
 
-		return new Result<Resource>(resultStatus.SUCCESS.status, "success", resource);
+		return new Result<Resource>(resultStatus.SUCCESS.status, message, resource);
 	}
 
 	@Override

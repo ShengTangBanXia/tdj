@@ -55,13 +55,19 @@ public interface ResourceDao {
 			+ "resource.resource_id = roleResource.resource_id where roleResource.role_id = #{roleId}")
 	List<Resource> getResourcesByRoleId(int roleId);
 
-	@Select("select * from resource where resource_id=#{resourceId}")
+	@Select("select * from resource where resource_id = #{resourceId}")
 	@Results(id="resourceResult", value={
 			@Result(column="resource_id", property="resourceId"),
 			@Result(column="resource_id",property="roles",
 					javaType=List.class,
-					many=@Many(select="com.thornBird.sbd.modules.account.dao."
+					many=@Many(select="com.tdj.SpringBootDemo1.models.account.dao."
 							+ "RoleDao.getRolesByResourceId"))
 		})
 	Resource getResourceById(int resourceId);
+	
+	@Select("select * from resource where permission = #{permission}")
+	Resource getResourceByPermission(String permission);
+	
+	@Select("select * from resource where resource_name = #{resourceName}")
+	Resource getResourceByResourceName(String resourceName);
 }
