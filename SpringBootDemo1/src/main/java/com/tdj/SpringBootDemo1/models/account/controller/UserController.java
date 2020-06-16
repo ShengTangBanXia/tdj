@@ -29,7 +29,7 @@ public class UserController {
 	@PostMapping(value = "/user", consumes = "application/json")
 	public Result<User> insertUser(@RequestBody User user) {
 		
-		return userService.insertUser(user);	
+		return userService.editUser(user);	
 	}
 	
 //	@PostMapping(value = "/user", consumes = "application/json")
@@ -67,7 +67,7 @@ public class UserController {
 	@PutMapping(value = "/user", consumes = "application/json")
 	public Result<User> updateUser(@RequestBody User user) {
 		
-		return userService.updateUser(user);
+		return userService.editUser(user);
 	}
 	
 	/**

@@ -43,7 +43,7 @@ public interface UserDao {
 			+ "</script>")
 	List <User> getUsersBySearchVo (SearchVo searchVo);	
 	
-	@Select("select *from user where user_id = #{userId}")
+	@Select("select * from user where user_id = #{userId}")
 	@Results(id = "userResult", value = {
 			@Result(column = "user_id", property = "userId"),
 			@Result(column = "user_id", property = "roles" ,
