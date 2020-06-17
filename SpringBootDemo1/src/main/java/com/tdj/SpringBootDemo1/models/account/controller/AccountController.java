@@ -52,4 +52,12 @@ public class AccountController {
 		return "index";
 	}	
 	
+	/**
+	 * http://127.0.0.1/account/resources
+	 */
+	@RequestMapping("/profile")
+	public String profilePage() {
+		return "index";
+	}
+	
 }
