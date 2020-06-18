@@ -9,6 +9,9 @@ import java.util.Optional;
 
 import javax.transaction.Transactional;
 
+import org.apache.shiro.SecurityUtils;
+import org.apache.shiro.authc.UsernamePasswordToken;
+import org.apache.shiro.subject.Subject;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -52,12 +55,27 @@ public class UserServiceImpl implements UserService{
 	@Override
 	public Result<User> login(User user) {
 		
-		User temporaryUser = getUserByUserName(user.getUserName());
-		if (temporaryUser == null 
-			|| !temporaryUser.getPassword().equals(MD5Util.getMD5(user.getPassword()))) {	//判断数据库里是否有此用户,以及密码是否相等
-			return new Result <User> (resultStatus.FAILED.status, "The user name does not exist or the password is wrong!!!");
+//		User temporaryUser = getUserByUserName(user.getUserName());
+//		if (temporaryUser == null 
+//			|| !temporaryUser.getPassword().equals(MD5Util.getMD5(user.getPassword()))) {	//判断数据库里是否有此用户,以及密码是否相等
+//			return new Result <User> (resultStatus.FAILED.status, "The user name does not exist or the password is wrong!!!");
+//		}
+		
+		
+		Subject subject = SecurityUtils.getSubject();
+		UsernamePasswordToken usernamePasswordToken = 
+				new UsernamePasswordToken(user.getUserName(),MD5Util.getMD5(user.getPassword()) );
+		usernamePasswordToken.setRememberMe(user.getRememberMe());
+		
+		try {
+			subject.login(usernamePasswordToken);
+			subject.checkRoles();
+			
+		} catch (Exception e) {
+			return new Result <User> (resultStatus.FAILED.status, "Login userName or userPassword is error!", user);
 		}
-		return new Result <User> (resultStatus.SUCCESS.status, "Login succeeded!", temporaryUser);
+		
+		return new Result <User> (resultStatus.SUCCESS.status, "Login succeeded!", user);
 	}
 
 	@Override
