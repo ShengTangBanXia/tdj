@@ -15,6 +15,8 @@ public interface UserService {
 	
 	Result<User> login (User user);
 	
+	void logOut ();
+	
 	PageInfo<User> getUsersBySearchVo (SearchVo searchVo);	
 	
 	User getUserByUserId (int userId);

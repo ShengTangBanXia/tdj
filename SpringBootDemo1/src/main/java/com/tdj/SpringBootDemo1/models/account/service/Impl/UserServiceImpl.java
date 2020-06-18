@@ -79,6 +79,14 @@ public class UserServiceImpl implements UserService{
 	}
 
 	@Override
+	public void logOut() {
+		
+		Subject subject = SecurityUtils.getSubject();
+		subject.logout();
+		
+	}
+
+	@Override
 	public PageInfo<User> getUsersBySearchVo(SearchVo searchVo) {
 
 		searchVo.initSearchVo();	//初始化分页
@@ -113,10 +121,12 @@ public class UserServiceImpl implements UserService{
 		}
 		
 		if (user.getUserId() > 0) {	//说明是修改操作不是插入操作			
-			userDao.updateUser(user);	//修改数据			
+		//	userDao.updateUser(user);	//管理员只能修改用户的角色信息，不能更改用户信息，用户信息应在profile页面修改			
 			userRoleDao.deleteRolesByUserId(user.getUserId());	//删除中间表信息
 			message = "Update Success!";
 		}else {	//说明是插入操作
+			user.setCreateDate(new Date());	//设置日期
+			user.setPassword(MD5Util.getMD5(user.getPassword()));	//利用MD5对密码进行加密
 			userDao.insertUser(user);
 			message = "Insert Success!";
 		}

@@ -1,18 +1,34 @@
 package com.tdj.SpringBootDemo1.models.account.controller;
 
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
+import org.springframework.ui.ModelMap;
 import org.springframework.web.bind.annotation.RequestMapping;
+
+import com.tdj.SpringBootDemo1.models.account.service.UserService;
 
 @Controller
 @RequestMapping("/account")
 public class AccountController {
 
+	@Autowired
+	private UserService userService;
+	
 	/**
 	 * http://127.0.0.1/account/login
 	 */
 	@RequestMapping("/login")
 	public String loginPage () {
 		
+		return "indexSimple";
+	}
+	
+	@RequestMapping("/logout")
+	public String logOut (ModelMap modelMap) {
+		
+		userService.logOut();
+		//手动设置template，好让拦截器找到要跳转的页面
+		modelMap.addAttribute("template", "account/login");
 		return "indexSimple";
 	}
 	

@@ -28,22 +28,26 @@
 				<h3>General</h3>
 				<ul class="nav side-menu">
 
-					<li><a href="/common/dashboard"> <i
-							class="fa fa-dashboard"></i> Dashboard 
-					</a></li>
+					<li shiro:hasAnyRoles="admin,manager,staff">
+						<a href="/common/dashboard"> 
+							<i class="fa fa-dashboard"></i> Dashboard 
+						</a>
+					</li>
 
 					<li><a><i class="fa fa-user"></i> Account <span
 							class="fa fa-chevron-down"></span></a>
 						<ul class="nav child_menu">
-							<li><a href="/account/profile">Profile</a></li>
-							<li><a href="/account/users">Users</a></li>
-							<li><a href="/account/roles">Roles</a></li>
-							<li><a href="/account/resources">Resources</a></li>
+							<li shiro:hasAnyRoles="admin,manager,staff"><a href="/account/profile">Profile</a></li>
+							<li shiro:hasAnyRoles="admin,manager"><a href="/account/users">Users</a></li>
+							<li shiro:hasAnyRoles="admin,manager"><a href="/account/roles">Roles</a></li>
+							<li shiro:hasAnyRoles="admin,manager"><a href="/account/resources">Resources</a></li>
 						</ul></li>
 	
-					<li><a href="/test/index"> <i
-							class="fa fa-wrench"></i> Test 
-					</a></li>					
+					<li shiro:hasAnyRoles="admin,manager,staff">
+						<a href="/test/index"> 
+							<i class="fa fa-wrench"></i> Test 
+						</a>
+					</li>					
 						
 				</ul>
 			</div>
