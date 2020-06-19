@@ -10,6 +10,7 @@ import org.apache.shiro.spring.web.ShiroFilterFactoryBean;
 import org.apache.shiro.web.mgt.CookieRememberMeManager;
 import org.apache.shiro.web.mgt.DefaultWebSecurityManager;
 import org.apache.shiro.web.servlet.SimpleCookie;
+import org.apache.shiro.web.session.mgt.DefaultWebSessionManager;
 import org.springframework.aop.framework.autoproxy.DefaultAdvisorAutoProxyCreator;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Bean;
@@ -29,6 +30,8 @@ public class ShiroConfig {
 		
 		DefaultWebSecurityManager securityManager = new DefaultWebSecurityManager();		
 		securityManager.setRealm(myShiroRealm);		
+		securityManager.setRememberMeManager(rememberMeManager());
+		securityManager.setSessionManager(sessionManager());
 		return securityManager;		
 	}
 	
@@ -137,6 +140,32 @@ public class ShiroConfig {
 	    cookieRememberMeManager.setCipherService(new AesCipherService());
 	    cookieRememberMeManager.setCipherKey(cipherKey);
 	    return cookieRememberMeManager;
+	}
+	
+	/**
+	 * sessionCookie
+	 */
+	@Bean
+	public SimpleCookie sessionCookie() {
+	    SimpleCookie simpleCookie = new SimpleCookie("shiro.sesssion");
+	    simpleCookie.setPath("/");
+	    simpleCookie.setHttpOnly(true);
+	    simpleCookie.setMaxAge(1 * 24 * 60 * 60);
+	    return simpleCookie;
+	}
+
+	/**
+	 * 1、session 管理，去掉重定向后Url追加SESSIONID
+	 * 2、shiro默认Cookie名称是JSESSIONID，与servlet(jetty, tomcat等默认JSESSIONID)冲突，
+	 * --我们需要为shiro指定一个不同名称的Session id，否则抛出UnknownSessionException: 
+	 * There is no session with id异常
+	 */
+	@Bean
+	public DefaultWebSessionManager sessionManager() {
+		DefaultWebSessionManager sessionManager = new DefaultWebSessionManager();
+		sessionManager.setSessionIdUrlRewritingEnabled(false);
+		sessionManager.setSessionIdCookie(sessionCookie());
+		return sessionManager;
 	}
 	
 }

@@ -13,4 +13,10 @@ public class CommonController {
 		return "index";
 	}
 	
+	@RequestMapping("/403")
+	public String errorPageFor403() {
+		
+		return"index";
+	}
+	
 }
