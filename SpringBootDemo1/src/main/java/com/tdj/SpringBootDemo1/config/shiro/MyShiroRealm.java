@@ -39,8 +39,8 @@ public class MyShiroRealm extends AuthorizingRealm{
 
 		SimpleAuthorizationInfo simpleAuthorizationInfo = new SimpleAuthorizationInfo();	//创建资源验证器
 		
-		String userName = (String) principals.getPrimaryPrincipal();	//获取用户名
-		User user = userService.getUserByUserName(userName);			//查询用户
+	//	User userName = principals.getPrimaryPrincipal();	//获取用户名
+		User user = (User) principals.getPrimaryPrincipal();;			//查询用户
 		//若用户不存在，返回错误信息
 		if (user == null) {	
 			throw new UnknownAccountException("This user name do not exist.");
@@ -68,7 +68,7 @@ public class MyShiroRealm extends AuthorizingRealm{
 			throw new UnknownAccountException("This user name do not exist.");
 		}
 		//身份验证器，包装用户名和密码
-		return new SimpleAuthenticationInfo(user.getUserName(),user.getPassword(), getName());
+		return new SimpleAuthenticationInfo(user,user.getPassword(), getName());
 	}
 
 }

@@ -300,7 +300,7 @@
 $(document).ready(function() {
 	initFileInput();
 
- 	initUserProfile(9);
+ 	initUserProfile($("#userId").val());
 
 	$("#profileEditBtn").bind("click", function(){
 		editProfile();

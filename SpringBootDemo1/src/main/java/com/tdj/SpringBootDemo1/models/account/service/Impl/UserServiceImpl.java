@@ -11,6 +11,7 @@ import javax.transaction.Transactional;
 
 import org.apache.shiro.SecurityUtils;
 import org.apache.shiro.authc.UsernamePasswordToken;
+import org.apache.shiro.session.Session;
 import org.apache.shiro.subject.Subject;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -70,6 +71,10 @@ public class UserServiceImpl implements UserService{
 		try {
 			subject.login(usernamePasswordToken);
 			subject.checkRoles();
+			
+			Session session = subject.getSession();
+			User userTmp = (User)subject.getPrincipal();
+			session.setAttribute("user", userTmp);
 			
 		} catch (Exception e) {
 			return new Result <User> (resultStatus.FAILED.status, "Login userName or userPassword is error!", user);
