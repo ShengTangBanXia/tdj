@@ -2,7 +2,7 @@ package com.tdj.account.models.account.entity;
 
 import java.io.Serializable;
 import java.util.Date;
-
+import java.util.List;
 
 import com.fasterxml.jackson.annotation.JsonFormat;
 
@@ -19,9 +19,10 @@ public class User implements Serializable{
 	private Date createDate;
 	
 	private String accountName;
-	
 	private boolean rememberMe;
 
+	private List<City> cities;
+	
 	public int getUserId() {
 		return userId;
 	}
@@ -78,4 +79,12 @@ public class User implements Serializable{
 		this.accountName = accountName;
 	}
 
+	public List<City> getCities() {
+		return cities;
+	}
+
+	public void setCities(List<City> cities) {
+		this.cities = cities;
+	}
+	
 }
