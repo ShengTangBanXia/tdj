@@ -69,7 +69,7 @@ public class UserServiceImpl implements UserService{
 		usernamePasswordToken.setRememberMe(user.getRememberMe());
 		
 		try {
-			subject.login(usernamePasswordToken);
+			subject.login(usernamePasswordToken);	//将令牌和身份验证器比较
 			subject.checkRoles();
 			
 			Session session = subject.getSession();

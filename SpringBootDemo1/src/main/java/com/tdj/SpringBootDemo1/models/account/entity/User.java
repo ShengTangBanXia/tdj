@@ -27,6 +27,7 @@ public class User {
 	@JsonFormat(pattern = "yyyy-MM-dd HH:mm:ss", timezone = "GMT+8")
 	private Date createDate;
 
+	////加上此注解，可让该属性不会出现在数据库自动生成的表中
 	@Transient
 	private boolean rememberMe;
 	@Transient
