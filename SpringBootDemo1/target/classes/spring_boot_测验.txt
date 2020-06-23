@@ -87,15 +87,44 @@
 　　　3、比较成功则执行相应操作，否则返回设置好的页面。
 四、编程题（共2小题，1题12分，2题13分，共25分）
 	访问控制层，将一个List装入requset中，再在页面上以表格的形式显示出来
-	请写出重定向到某个页面的代码
 
 答：代码如下：
 　　　
-　　　控制器代码 
-	@PostMapping(value = "/login", consumes = "application/json")
-	public Result<User> login(@RequestBody User user) {
+　　数据控制器代码 
+	@RequestMapping("/cities/{countryId}")
+	public List<City> getCitiesByCountryId(@PathVariable int countryId) {
 		
-		return userService.login(user);
-　　　	}
-　　　
-　　　
+		return cityService.getCitiesByCountryId(countryId);
+	}
+　　页面控制器代码
+	@RequestMapping("/index")
+	public String indexPage (ModelMap modelmap) {
+		
+		List<City> cities = cityService.getCitiesByCountryId(522);
+		cities = cities.stream().limit(10).collect(Collectors.toList());	//将cities数据限制在十条
+		modelmap.addAttribute("cities", cities);
+		
+		
+		return "index";
+	}	
+	页面代码
+	<div style="text-align: center">
+	<table border="1" style="margin: auto;" width='60%'>
+		<tr>
+			<th>cityId</th>
+			<th>cityName</th>
+			<th>countryId</th>
+		
+		</tr>
+		<tr th:each="city : ${cities}">
+			<td th:text="${city.cityId}"></td>
+			<td th:text="${city.cityName}"></td>
+			<td th:text="${city.countryId}"></td>
+		</tr>
+	</table>
+</div>
+
+	请写出重定向到某个页面的代码　
+
+答：代码如下：
+	return "redirect:/test/index";　　
