@@ -1,0 +1,101 @@
+一、选择题（共12小题，每小题2.5分，共30分）
+	以下不是spring boot优点的是 (D)
+		A．快速搭建项目
+		B．简化配置  
+		C．自动配置  
+		D．无需容器
+	Spring Boot配置，以下哪个优先级最高（A）
+		A、外置：xx.jar同目录下/config/application.properties；
+		B、外置：xx.jar同目录下/config/application.yml；
+		C、内置：src/main/resources/config；
+		D、内置：src/main/resources
+	以下log日志级别哪个最高（D）
+		A、DEBUG
+		B、INFO
+		C、WARN
+		D、ERROR
+	以下不是spring boot的核心注解的是 (B)
+		A.	@SpringBootConfiguration
+		B.	@EnableAutoConfiguration
+		C.	@ComponentScan
+		D.	@MapperScan
+	要使用springMVC的功能，以下哪个架包是必须加的 (C)
+		A．spring-boot-starter-jdbc  
+		B．spring-boot-starter-thymeleaf  
+		C．spring-boot-starter-web  
+		D．mybatis-spring-boot-starter
+	以下哪个注解不能加在类上 (A、C)
+		A.	@Controller
+		B.	@ResponseBody
+		C.	@RestController
+		D.	@RequestMapping
+	当控制层上有@RestController注解时，方法中返回一个字符串“<h1>Hello</h1>” 的结果是 (B)
+		A. 一级标题显示的Hello
+		B.	找不到Hello.html
+		C.	<h1>Hello</>
+		D.	Hello
+	SpringBoot项目中配置文件的格式 (C)
+		A．properties  
+		B．yml  
+		C．两者都可以
+	前台使用json参数格式，控制器consumer、参数使用的注解是（A）
+		A、application/josn ---- @RequestBody
+		B、application/josn ---- @ModelAttribute
+		C、application/x-www-form-urlencoded ---- @RequestBody
+		D、application/x-www-form-urlencoded ---- @ModelAttribute
+	@Pointcut("execution(public * com.thornBird.sbd.modules.*.controller.*.*(..))")，第三个*代表（B）
+		A、代表返回类型不限
+		B、代表module下所有子包
+		C、代表所有类
+		D、代表所有方法
+	Url匹配风格中/admin*，以下哪个匹配不正确（D）
+		A、/admin
+		B、/admin1
+		C、/admin123
+		D、/admin/1
+	Mybatis框架中，插入数据使用那个注解（B）
+		A、@Update
+		B、@Insert
+		C、@Select
+		D、@InsertMapping
+二、填空题（共5小题，每小题5分，共25分）
+	Java配置依赖的2个注解是_____@Configuration_____，______@Bean_____；
+	修改tomcat端口号为9090应该怎么写？_____server.http.port=8080_______；
+	自定义拦截器需要实现____HandlerInterceptor____接口；
+	过滤器需要使用_____@WebFilter____注解；
+	上传文件，使用_MultipartFile___接收文件对象，consumer使用__multipart/form-dat___；
+三、问答题（每题5分）
+	简述Spring
+答：Spring是一套快速开发的框架，里面集成了IOC和AOP。
+
+	简述Git使用流程，写几个常用Git命令；
+答：git是一种存储代码的分布式仓库，个人可以执行提交和修改代码等操作，非常利于开发。
+常用Git命令有:1、git clone；2、git pull；3、git push等。
+
+	简述敏捷开发、Scrum流程；
+答：Scrum流程是，把每一个项目分成一个个小的项目或者issue，并制定相应的时间来完成相应的issue，每天通过迭代开发来完善项目，最终使得项目能够快速的被开发出来。
+
+	简述shiro两大功能实现流程；
+答：Shiro的两大功能是，资源授权和身份验证。
+　　　资源授权的实现方式是：
+　　　1、从数据库中查找每个用户能使用的资源，并包装成资源验证器
+　　　2、在要进行资源授权的控制器或这页面上的某个div中以shiro注解的形式(shiro:hasAnyRoles)来进行授权
+　　　3、在用户使用资源时，会将需要使用的资源包装成令牌，并与用户的资源验证器比较，若改用户有权限，则课使用该资源，否则无法使用该资源
+　　　身份验证的实现方式是：igu
+　　　1、从数据库中查找每个用户的权限，并包装成身份验证器
+　　　2、在要进行身份验证的操作时，将页面上该用户的权限信息包装成令牌并与用户的身份验证器比较
+　　　3、比较成功则执行相应操作，否则返回设置好的页面。
+四、编程题（共2小题，1题12分，2题13分，共25分）
+	访问控制层，将一个List装入requset中，再在页面上以表格的形式显示出来
+	请写出重定向到某个页面的代码
+
+答：代码如下：
+　　　
+　　　控制器代码 
+	@PostMapping(value = "/login", consumes = "application/json")
+	public Result<User> login(@RequestBody User user) {
+		
+		return userService.login(user);
+　　　	}
+　　　
+　　　
