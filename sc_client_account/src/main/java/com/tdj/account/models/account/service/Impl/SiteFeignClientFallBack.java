@@ -9,7 +9,7 @@ import com.tdj.account.models.account.entity.City;
 import com.tdj.account.models.account.service.SiteFeignClient;
 
 @Component
-public class SiteFeignClientFullBack implements SiteFeignClient {
+public class SiteFeignClientFallBack implements SiteFeignClient {
 
 	@Override
 	public List<City> getCitiesByCountryId(int countryId) {
