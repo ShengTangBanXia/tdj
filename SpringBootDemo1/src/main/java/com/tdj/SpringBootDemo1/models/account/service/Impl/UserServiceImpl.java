@@ -158,7 +158,7 @@ public class UserServiceImpl implements UserService{
 
 		String originalFilename = userImage.getOriginalFilename();
 		String relatedPath = resourceConfigBean.getResourcePath() + originalFilename;
-		String destPath = String.format("%s%s", resourceConfigBean.getLocalPathForWindows(), originalFilename);
+		String destPath = String.format("%s%s", resourceConfigBean.getLocalPathForWindow(), originalFilename);
 		try {
 			File destFile = new File(destPath);
 			userImage.transferTo(destFile);

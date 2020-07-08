@@ -67,7 +67,7 @@ public class WebMvcConfig implements WebMvcConfigurer {
 
 		String systemName = System.getProperty("os.name");
 		if (systemName.toLowerCase().startsWith("win"))
-			registry.addResourceHandler(resourceConfigBean.getResourcePathPattern()).addResourceLocations(ResourceUtils.FILE_URL_PREFIX + resourceConfigBean.getLocalPathForWindows());
+			registry.addResourceHandler(resourceConfigBean.getResourcePathPattern()).addResourceLocations(ResourceUtils.FILE_URL_PREFIX + resourceConfigBean.getLocalPathForWindow());
 		else
 			registry.addResourceHandler(resourceConfigBean.getResourcePathPattern()).addResourceLocations(ResourceUtils.FILE_URL_PREFIX + resourceConfigBean.getLocalPathForLinux());
 		

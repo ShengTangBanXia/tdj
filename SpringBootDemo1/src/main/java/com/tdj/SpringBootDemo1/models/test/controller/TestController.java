@@ -61,7 +61,7 @@ public class TestController {
 	public ResponseEntity<Resource> download(@RequestParam String fileName) {
 
 		try {
-			String resourcePath = resourceConfigBean.getLocalPathForWindows() + fileName;
+			String resourcePath = resourceConfigBean.getLocalPathForWindow() + fileName;
 //			Resource resource = new UrlResource(Paths.get("D:\\upload\\" + fileName).toUri());
 			Resource resource = new UrlResource(ResourceUtils.getURL(resourcePath));
 
@@ -184,7 +184,7 @@ public class TestController {
 			redirectAttributes.addFlashAttribute("message", "Please select file !!!");
 		else {
 				try {
-					String resourceLocalPath = resourceConfigBean.getLocalPathForWindows() + file.getOriginalFilename();
+					String resourceLocalPath = resourceConfigBean.getLocalPathForWindow() + file.getOriginalFilename();
 					File destFile = new File(resourceLocalPath);
 					//File destFile = new File(ResourceUtils.getURL(resourcePath).getPath());
 					file.transferTo(destFile);

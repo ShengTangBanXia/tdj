@@ -1,6 +1,5 @@
 package com.tdj.SpringBootDemo1.config;
 
-
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.context.annotation.PropertySource;
 import org.springframework.stereotype.Component;
@@ -11,13 +10,10 @@ public class ResourceConfigBean {
 
 	@Value("${spring.resource.path}")
 	private String resourcePath;
-
 	@Value("${spring.resource.path.pattern}")
 	private String resourcePathPattern;
-	
 	@Value("${spring.resource.folder.windows}")
-	private String localPathForWindows;
-	
+	private String localPathForWindow;
 	@Value("${spring.resource.folder.linux}")
 	private String localPathForLinux;
 
@@ -29,12 +25,12 @@ public class ResourceConfigBean {
 		this.resourcePath = resourcePath;
 	}
 
-	public String getLocalPathForWindows() {
-		return localPathForWindows;
+	public String getLocalPathForWindow() {
+		return localPathForWindow;
 	}
 
-	public void setLocalPathForWindows(String localPathForWindows) {
-		this.localPathForWindows = localPathForWindows;
+	public void setLocalPathForWindow(String localPathForWindow) {
+		this.localPathForWindow = localPathForWindow;
 	}
 
 	public String getLocalPathForLinux() {
@@ -52,7 +48,4 @@ public class ResourceConfigBean {
 	public void setResourcePathPattern(String resourcePathPattern) {
 		this.resourcePathPattern = resourcePathPattern;
 	}
-	
-	
-	
 }
