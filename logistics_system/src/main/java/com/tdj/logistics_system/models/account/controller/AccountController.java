@@ -16,10 +16,19 @@ public class AccountController {
 		return "index";
 	}
 	
+	/**
+	 * 127.0.0.1/account/orderEntry
+	 */
+	@RequestMapping("/orderEntry")
 	public String orderEntry() {
 		
-		return "orderEntry";
+		return "index";
 	}
 	
+	@RequestMapping("/test")
+	public String testPage() {
+		
+		return "index";
+	}
 	
 }
