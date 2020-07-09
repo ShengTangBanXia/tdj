@@ -194,6 +194,16 @@ public class Order {
 	public void setFinishTime(Date finishTime) {
 		this.finishTime = finishTime;
 	}
+
+	@Override
+	public String toString() {
+		return "Order [orderId=" + orderId + ", orderNum=" + orderNum + ", orderSender=" + orderSender
+				+ ", senderAddress=" + senderAddress + ", senderTel=" + senderTel + ", orderReceiver=" + orderReceiver
+				+ ", receiverAddress=" + receiverAddress + ", receiverTel=" + receiverTel + ", packageType="
+				+ packageType + ", volume=" + volume + ", weight=" + weight + ", carryMethod=" + carryMethod
+				+ ", payMethod=" + payMethod + ", orderPrincipal=" + orderPrincipal + ", orderStatus=" + orderStatus
+				+ ", inputTime=" + inputTime + ", outputTime=" + outputTime + ", finishTime=" + finishTime + "]";
+	}
 	
 	
 	
