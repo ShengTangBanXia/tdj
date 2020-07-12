@@ -1,0 +1,135 @@
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml"
+	xmlns:th="http://www.thymeleaf.org"
+	xmlns:sec="http://www.thymeleaf.org/thymeleaf-extras-springsecurity3"
+	xmlns:shiro="http://www.pollix.at/thymeleaf/shiro" lang="en">
+
+<!-- 模态框（Modal） -->
+<div th:fragment="orderEdit" class="modal fade" id="orderEditModal" tabindex="-1"
+	role="dialog" aria-labelledby="orderEditLabel" aria-hidden="true">
+	<div class="modal-dialog modal-lg" role="document">
+		<div class="modal-content">
+			<!-- modal-header -->
+			<div class="modal-header">
+				<h4 class="modal-title" id="orderEditLabel" style="font-size: 18px; font-weight: 500;">订单编辑</h4>
+				<button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
+			</div>
+			
+			<!-- modal-body -->
+			<div class="modal-body" >
+				<form>
+					<div id="msg"></div>		
+					<div class="form-group row">
+						<label class="control-label col-md-1">订单编号</label>
+						<div class="col-md-5">
+							<input id="orderNumForEdit" name="orderNum" class="form-control" 
+									type="text" readonly>
+						</div>
+						
+						<label class="control-label col-md-1">下单时间</label>
+						<div class="col-md-5">
+							<input id="inputTimeForEdit" name="inputTime" class="form-control" 
+									type="text" readonly>
+						</div>
+						
+					</div>
+					<hr style="border:none;border-top-width:5px;border-top-style:solid;border-top-color:gray;" />
+					<div class="form-group row">
+						<label class="control-label col-md-1">寄件人</label>
+						<div class="col-md-5">
+							<input id="orderSenderForEdit" name="orderSender" class="form-control" 
+								type="text" placeholder="输入寄件人姓名">
+						</div>
+						
+						<label class="control-label col-md-1">联系方式</label>
+						<div class="col-md-5">
+							<input id="senderTelForEdit" name="senderTel" class="form-control" 
+								type="text" placeholder="输入寄件人电话">
+						</div>
+					</div>
+					
+					<label for="senderAddress" class="control-label">寄件地址</label>
+					<div id="senderAddress" class="form-group row" >
+						<div class="col-md-3" id="province_Div1">
+							<select id="province1" class="form-control" >
+							  <option value="-1" selected="selected">选择省份</option>
+							</select>
+						</div>
+						
+						<div class="col-md-3">
+							<select id="city1" class="form-control" >
+							  <option value="-1" selected="selected">选择城市</option>
+							</select>
+						</div>
+						
+						<div class="col-md-3">
+							<select id="area1" class="form-control" >
+							  <option value="-1" selected="selected">选择区/县</option>
+							</select>
+						</div>
+						
+						<div class="col-md-3">
+							<input id="particularAddress1" class="form-control" 
+								type="text" placeholder="输入详细地址">
+						</div>
+					</div>
+					
+					<hr style="border:none;border-top-width:5px;border-top-style:solid;border-top-color:gray;" />
+					
+					<div class="form-group row">
+						<label class="control-label col-md-1">收件人</label>
+						<div class="col-md-5">
+							<input id="orderReceiverForEdit" name="orderReceiver" class="form-control" 
+								type="text" placeholder="输入收件人姓名">
+						</div>
+						
+						<label class="control-label col-md-1">联系方式</label>
+						<div class="col-md-5">
+							<input id="receiverTelForEdit" name="receiverTel" class="form-control" 
+								type="text" placeholder="输入收件人电话">
+						</div>
+					</div>
+					
+					<label for="receiverAddress" class="control-label">收件地址</label>
+					<div id="receiverAddress" class="form-group row" >
+						<div class="col-md-3">
+							<select id="province2" class="form-control" >
+							  <option value="-1" selected="selected">选择省份</option>
+							</select>
+						</div>
+						
+						<div class="col-md-3">
+							<select id="city2" class="form-control" >
+							  <option value="-1" selected="selected">选择城市</option>
+							</select>
+						</div>
+						
+						<div class="col-md-3">
+							<select id="area2" class="form-control" >
+							  <option value="-1" selected="selected">选择区/县</option>
+							</select>
+						</div>
+						
+						<div class="col-md-3">
+							<input id="particularAddress2" class="form-control" 
+								type="text" placeholder="输入详细地址">
+						</div>
+					</div>
+				</form>
+			</div>
+			
+			<!-- modal-footer -->
+			<div class="modal-footer">
+				<!-- data-dismiss="modal"关闭模态框 -->
+				<a class="btn btn-secondary" href="#" data-dismiss="modal">
+					<i class="fa fa-fw fa-lg fa-times-circle"></i>关闭
+				</a>
+				<button id="orderEditBtn" data-dismiss="modal" 
+					class="btn btn-primary" type="button">
+					<i class="fa fa-fw fa-lg fa-check-circle"></i>修改
+				</button>
+			</div>
+		</div>
+	</div>
+</div> 
+</html>

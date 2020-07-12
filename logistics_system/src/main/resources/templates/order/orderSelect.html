@@ -8,7 +8,8 @@
 <link th:href="${'/css/jquery.dataTables.min.css'}" rel="stylesheet" >
 
 <!-- jquery.dataTables -->
-<script th:src="${'/js/jquery.dataTables.min.js'}" type="text/javascript"></script>
+<!-- <script th:src="${'/js/jquery.dataTables.min.js'}" type="text/javascript"></script> -->
+<script th:src="${'/vendors/datatables.net/js/jquery.dataTables.min.js'}" type="text/javascript"></script>
 
 <!-- dataTables -->
 <link th:href="${'/vendors/datatables.net-bs/css/dataTables.bootstrap.min.css'}" rel="stylesheet" />
@@ -36,7 +37,7 @@
                       <div class="row">
                           <div class="col-sm-12">
 			              		<div class="card-box table-responsive">			
-			                    	<table id="ordertable" class="table table-striped table-bordered" style="width:100%">
+			                    	<table id="ordertable" class="table table-hover" style="width:100%">
 					                     <thead>
 					                        <tr>
 					                          <th>订单编号</th>
@@ -47,7 +48,8 @@
 					                          <th>Operation</th>
 					                        </tr>
 					                     </thead>
-					                     <tbody></tbody>
+					                     <tbody>
+					                     </tbody>
 			                    	</table>
 			                	</div>
                   			</div>
@@ -60,13 +62,61 @@
  	</div>
 </div>
 
+<div th:replace="order/orderEdit"></div>
+
+<!-- common 里面放的是加载自己写的下拉框函数 -->
+<script th:src="${'/js/common.js'}" type="text/javascript"></script>
+
 <script type="text/javascript">
-var pageSize = 10;
+
+var pageSize = 3;
+
 $(document).ready( function () {
 	
-	initOrderTable(pageSize);	//初始化订单表
+	initOrderTable(pageSize);	//初始化订单表	
 	
 } );
+
+//模态框弹出时，执行此函数，初始化下拉框
+$('#orderEditModal').on('show.bs.modal', function () {
+
+	//清空所有下拉框
+	$("#province1").empty();
+	$("#province2").empty();
+	
+	$("#city1").empty();
+	$("#city2").empty();
+	
+	$("#area1").empty();
+	$("#area2").empty();
+	
+	//加载省份下拉框
+	showOption("first", "#province1");
+	showOption("first", "#province2");
+	
+	//加载城市下拉框
+	$("#province1").change(function() {
+		showOption("#province1", "#city1");
+	});
+	
+	$("#province2").change(function() {
+		showOption("#province2", "#city2");
+	});
+	
+	//加载区县下拉框
+	$("#city1").change(function() {
+		showOption("#city1", "#area1");
+	});
+	
+	$("#city2").change(function() {
+		showOption("#city2", "#area2");
+	});
+	
+});
+
+function initEditModal (orderNum) {
+	
+}
 
 function initOrderTable(pageSize) {
 	
@@ -94,7 +144,10 @@ function initOrderTable(pageSize) {
 			searchVo.pageSize = pageSize;
 			searchVo.orderBy = orderBy;
 			searchVo.sort = sort;
-			searchVo.keyWord = data.search.value;
+			//为了解决因为输入多个中文时打拼音出现单引号从而导致后台SQL语句注入出错，每次将关键字中的单引号用空格代替
+			//new RegExp("'",'g')中的g表示全局匹配所有指定的单引号，否则每次只能替换第一个单引号
+			searchVo.keyWord = data.search.value.replace(new RegExp("'",'g')," ");
+			
 
 			$.ajax({
 				url : "/order/orders",
@@ -133,7 +186,6 @@ function initOrderTable(pageSize) {
 					fData.data = gearDatas;
 					fData.recordsTotal = rs.total;
 					fData.recordsFiltered = rs.total;
-					console.log(fData);
 					callback(fData);
 				},
 				error : function (data) {
@@ -161,7 +213,7 @@ function TData(orderNum, orderSender, orderReceiver, orderStatus, orderPrincipal
 	this.orderStatus = orderStatus;
 	this.orderPrincipal = orderPrincipal;
 	this.operate = function () {
-		return "<a href='#' class='btn_editcolor'" +
+		return "<a href='#' class='btn_editcolor' data-toggle='modal' data-target='#orderEditModal' " +
 			"onclick='initEditModal(\"" + orderNum + "\")'>编辑</a>&nbsp;" + 
 			"<a href='javascript:void(0);' onclick='deleteOrder(\"" + orderNum + "\")' class='btn_editcolor'>删除</a>";
 	}
