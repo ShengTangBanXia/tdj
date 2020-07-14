@@ -1,4 +1,7 @@
 <html>
+<!-- jquery.dataTables -->
+<script th:src="${'/vendors/datatables.net/js/jquery.dataTables.min.js'}" type="text/javascript"></script>
+
 <div class="right_cont">
 <ul class="breadcrumb">当前位置：
   <a href="#">订单系统</a> <span class="divider">/</span>
@@ -11,7 +14,7 @@
          <tbody>
 	         <tr>
 			     <td width="10%" align="right" nowrap="nowrap" bgcolor="#f1f1f1">下单时间：</td>
-			     	<td width="23%"><input type="text" class="form-control"  id="Calendar" 
+			     	<td width="23%"><input type="text" class="form-control"  id="orderInputTime" 
 			     		onclick="fPopCalendar(event,this,this)" placeholder="点击选择日期 "></td>
 			     		
 			     <td width="10%" align="right" nowrap="nowrap" bgcolor="#f1f1f1">订单编号：</td>
@@ -35,7 +38,7 @@
 	     	</tr>
 		     <tr>
 			     <td align="right" nowrap="nowrap" bgcolor="#f1f1f1">寄件人：</td>
-			     	<td><input type="text" name="senderName" id="nameInput" class="form-control"></td>
+			     	<td><input type="text" name="senderName" id="senderNameInput" class="form-control"></td>
 			     	
 			     <td align="right" nowrap="nowrap" bgcolor="#f1f1f1">寄件地址：</td>
 			     	<td><input type="text" name="senderAddress" id="senderAddressInput" class="form-control" 
@@ -89,7 +92,7 @@
            
      <table class="margin-bottom-20  table no-border">
        <tbody><tr>
-     	<td class="text-center"><input type="button" value="提交订单" class="btn btn-outline-info" style="width:80px;"></td>
+     	<td class="text-center"><input type="button" value="提交订单" id="addOrderBtn" class="btn btn-outline-info" style="width:80px;"></td>
      </tr>
    </tbody></table>  
    </div>     
@@ -100,9 +103,21 @@
  <!-- Calendar.js -->
 <script th:src="${'/js/Calendar.js'}" type="text/javascript"></script>
 
+<!-- common 里面放的是加载自己写的下拉框函数 -->
+<script th:src="${'/js/common.js'}" type="text/javascript"></script>
+
 <script type="text/javascript">
 
 var tag = 0;	//用老标志是哪一个input框打开了模态框
+
+$(document).ready( function () {
+	
+	$("#addOrderBtn").bind("click", function() {
+		addOrder();
+	});
+	
+} );
+
 
 //获取随机订单编号函数
 function getNumber() {
@@ -134,45 +149,63 @@ function getAddress(number) {
 }
 
 //模态框弹出时，执行此函数，初始化下拉框
-$('#addressEditModal').on('show.bs.modal', function () {
-
-	
+$('#addressEditModal').on('show.bs.modal', function () {	
 	//加载省份下拉框
 	showOption("first", "#province1");
 	showOption("first", "#province2");
-	
-	//加载城市下拉框
-	$("#province1").change(function() {
-		showOption("#province1", "#city1");
-	});
-	
-	$("#province2").change(function() {
-		showOption("#province2", "#city2");
-	});
-	
-	//加载区县下拉框
-	$("#city1").change(function() {
-		showOption("#city1", "#area1");
-	});
-	
-	$("#city2").change(function() {
-		showOption("#city2", "#area2");
-	});
-	
+		
 });
 
 //模态框关闭后，执行此函数，设置地址
 $('#addressEditModal').on('hidden.bs.modal', function() {
 	
 	//获取输入的地址
-	var address = $("#province1").find("option:selected").text()
-				+ $("#city1").find("option:selected").text()
-				+ $("#area1").find("option:selected").text()
+	var address = $("#province1").find("option:selected").text() + ","
+				+ $("#city1").find("option:selected").text() + ","
+				+ $("#area1").find("option:selected").text() + ","
 				+ $("#particularAddress1").val();
 	
     if (tag == 1)	$("#senderAddressInput").val(address);		//设置寄件地址
     if (tag == 2)	$("#receiverAddressInput").val(address);	//设置收件地址
 });
 
+//添加订单
+function addOrder () {
+	
+	var order ={};
+	
+	order.inputTime = $("#orderInputTime").val();
+	order.orderNum = $("#orderNumInput").val();
+	order.packageType = $("#packageType").val();
+	
+	order.orderSender = $("#senderNameInput").val();
+	order.senderAddress = $("#senderAddressInput").val();
+	order.senderTel = $("#senderTelInput").val();
+	
+	order.orderReceiver = $("#receiverNameInput").val();
+	order.receiverAddress = $("#receiverAddressInput").val();
+	order.receiverTel = $("#receiverTelInput").val();
+	
+	order.payMethod = $("#payMethod").val();
+	 	
+	$.ajax({
+		url : "/order/add",
+		type : "post",
+		contentType: "application/json",
+		data : JSON.stringify(order),
+		success : function (data) {
+			if (data.status == 200) {
+				alert("提交订单成功!!!");
+				initOrderTable(pageSize);	//更新订单页面
+				
+			} else {
+				layer.msg(data.message, {icon: 0});
+			}
+		},
+		error : function (data) {
+			layer.msg(data.responseText, {icon: 0});
+		}
+	});	
+}
 </script>
 </html>

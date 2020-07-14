@@ -8,6 +8,8 @@ import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.Table;
 
+import org.springframework.format.annotation.DateTimeFormat;
+
 import com.fasterxml.jackson.annotation.JsonFormat;
 
 /**
@@ -42,11 +44,9 @@ public class Order {
 	private String orderPrincipal;
 	private String orderStatus;
 	
-	@JsonFormat(pattern = "yyyy-MM-dd HH:mm:ss", timezone = "GMT+8")
+	@JsonFormat(pattern = "yyyy-MM-dd", timezone = "GMT+8")
 	private Date inputTime;
 	
-	@JsonFormat(pattern = "yyyy-MM-dd HH:mm:ss", timezone = "GMT+8")
-	private Date outputTime;
 	
 	@JsonFormat(pattern = "yyyy-MM-dd HH:mm:ss", timezone = "GMT+8")
 	private Date finishTime;
@@ -179,13 +179,6 @@ public class Order {
 		this.inputTime = inputTime;
 	}
 
-	public Date getOutputTime() {
-		return outputTime;
-	}
-
-	public void setOutputTime(Date outputTime) {
-		this.outputTime = outputTime;
-	}
 
 	public Date getFinishTime() {
 		return finishTime;
@@ -202,8 +195,12 @@ public class Order {
 				+ ", receiverAddress=" + receiverAddress + ", receiverTel=" + receiverTel + ", packageType="
 				+ packageType + ", volume=" + volume + ", weight=" + weight + ", carryMethod=" + carryMethod
 				+ ", payMethod=" + payMethod + ", orderPrincipal=" + orderPrincipal + ", orderStatus=" + orderStatus
-				+ ", inputTime=" + inputTime + ", outputTime=" + outputTime + ", finishTime=" + finishTime + "]";
+				+ ", inputTime=" + inputTime + ", finishTime=" + finishTime + "]";
 	}
+
+
+	
+
 	
 	
 	
