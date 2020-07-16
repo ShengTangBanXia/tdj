@@ -1,0 +1,328 @@
+<!-- jquery.dataTables -->
+<link th:href="@{http://cdn.datatables.net/1.10.20/css/jquery.dataTables.min.css}" rel="stylesheet" >
+<!-- dataTables -->
+<link th:href="${'/vendors/datatables.net-bs/css/dataTables.bootstrap.min.css'}" rel="stylesheet" />
+<!-- buttons.bootstrap -->
+<link th:href="${'/vendors/datatables.net-buttons-bs/css/buttons.bootstrap.min.css'}" rel="stylesheet" />
+<!-- fixedHeader.bootstrap -->
+<link th:href="${'/vendors/datatables.net-fixedheader-bs/css/fixedHeader.bootstrap.min.css'}" rel="stylesheet" />
+<!-- responsive.bootstrap -->
+<link th:href="${'/vendors/datatables.net-responsive-bs/css/responsive.bootstrap.min.css'}" rel="stylesheet" />
+<!-- responsive.bootstrap -->
+<link th:href="${'/vendors/datatables.net-scroller-bs/css/scroller.bootstrap.min.css'}" rel="stylesheet" />
+
+<div class="right_col" role="main">
+	<div class="">
+		<div class="page-title">
+			<div class="title_left">
+				<h3>
+					Account / Couriers <small>This is couriers list.</small>
+				</h3>
+			</div>
+		
+			<!-- <div class="title_right">
+				<div
+					class="col-md-5 col-sm-5 col-xs-12 form-group pull-right top_search">
+					<div class="input-group">
+						<input type="text" class="form-control" placeholder="Search for...">
+						<span class="input-group-btn">
+							<button class="btn btn-secondary" type="button">Go!</button>
+						</span>
+					</div>
+				</div>
+			</div> -->
+		</div>
+		
+		<div class="clearfix"></div>
+		
+		<div class="row">
+			<div class="col-md-12 col-sm-12 ">
+				<div class="x_panel">
+					<!-- <div class="x_title">
+						<h2>
+							Default Example <small>couriers</small>
+						</h2>
+						<ul class="nav navbar-right panel_toolbox">
+							<li><a class="collapse-link"><i class="fa fa-chevron-up"></i></a>
+							</li>
+							<li class="dropdown"><a href="#" class="dropdown-toggle"
+								data-toggle="dropdown" role="button" aria-expanded="false"><i
+									class="fa fa-wrench"></i></a>
+								<div class="dropdown-menu" aria-labelledby="dropdownMenuButton">
+									<a class="dropdown-item" href="#">Settings 1</a> <a
+										class="dropdown-item" href="#">Settings 2</a>
+								</div></li>
+							<li><a class="close-link"><i class="fa fa-close"></i></a></li>
+						</ul>
+						<div class="clearfix"></div>
+					</div> -->
+					<div class="x_title">
+						<ul class="nav panel_toolbox" style="margin-left:0; float: left;">
+							<li>
+								<button type="button" class="btn btn-primary" id="addCourierBtn"
+									data-toggle="modal" data-target="#courierAddModal">增 加</button>
+							</li>
+						</ul>
+						<div class="clearfix"></div>
+					</div>
+					<div class="x_content">
+						<div class="row">
+							<div class="col-sm-12">
+								<div class="card-box table-responsive">
+									<!-- <p class="text-muted font-13 m-b-30">
+									</p> -->
+									<table id="datatable" class="table table-hover"
+										style="width: 100%">
+										<thead>
+											<tr>
+												<th>Courier Id</th>
+												<th>Courier Name</th>
+												<th>Courier Sex</th>
+												<th>courier Telephone</th>
+												<th>courier Entrytime</th>
+												<th>status</th>
+												<th>Operation</th>
+											</tr>
+										</thead>
+										<tbody></tbody>
+									</table>
+								</div>
+							</div>
+						</div>
+					</div>
+				</div>
+			</div>
+		</div>
+	</div>
+</div>
+
+<div th:replace="account/courierAdd"></div>
+<div th:replace="account/courierEdit"></div>
+
+<!-- jquery.dataTables -->
+<script th:src="${'/vendors/datatables.net/js/jquery.dataTables.min.js'}" type="text/javascript"></script>
+<!-- dataTables.bootstrap -->
+<script th:src="${'/vendors/datatables.net-bs/js/dataTables.bootstrap.min.js'}" type="text/javascript"></script>
+<!-- dataTables.buttons -->
+<script th:src="${'/vendors/datatables.net-buttons/js/dataTables.buttons.min.js'}" type="text/javascript"></script>
+<!-- dataTables.buttons -->
+<script th:src="${'/vendors/datatables.net-buttons-bs/js/buttons.bootstrap.min.js'}" type="text/javascript"></script>
+<script th:src="${'/vendors/datatables.net-buttons/js/buttons.flash.min.js'}" type="text/javascript"></script>
+<script th:src="${'/vendors/datatables.net-buttons/js/buttons.html5.min.js'}" type="text/javascript"></script>
+<script th:src="${'/vendors/datatables.net-buttons/js/buttons.print.min.js'}" type="text/javascript"></script>
+<!-- fixedHeader -->
+<script th:src="${'/vendors/datatables.net-fixedheader/js/dataTables.fixedHeader.min.js'}" type="text/javascript"></script>
+<!-- keyTable -->
+<script th:src="${'/vendors/datatables.net-keytable/js/dataTables.keyTable.min.js'}" type="text/javascript"></script>
+<!-- responsive -->
+<script th:src="${'/vendors/datatables.net-responsive/js/dataTables.responsive.min.js'}" type="text/javascript"></script>
+<script th:src="${'/vendors/datatables.net-responsive-bs/js/responsive.bootstrap.js'}" type="text/javascript"></script>
+<!-- scroller -->
+<script th:src="${'/vendors/datatables.net-scroller/js/dataTables.scroller.min.js'}" type="text/javascript"></script>
+
+<script type="text/javascript">
+var DEFAULT_PAGE_SIZE = 5;
+// 加载页面时，需要执行的 js 代码
+$(document).ready(function() {
+	initTable(DEFAULT_PAGE_SIZE);
+	$("#addCourierBtn").bind("click", function() {
+		initCourierAdd();
+	});
+	$("#courierAddBtn").bind("click", function() {
+		insertCourier();
+	});
+	$("#courierEditBtn").bind("click", function() {
+		editCourier();
+	});
+});
+
+function deleteCourier(courierId){
+	bootbox.confirm("Are you sure?", function(result) {
+		if(result) {
+			$.ajax({
+				url : "/api/courier/" + courierId,
+				type : "delete",
+				contentType: "application/json",
+				success : function (data) {
+					if (data.status == 200) {
+						initTable(DEFAULT_PAGE_SIZE);
+					} else {
+						layer.msg(data.message, {icon: 0});
+						window.location.href = data.object;
+					}
+				},
+				error : function (data) {
+					layer.msg(data.responseText, {icon: 0});
+				}
+			});
+		}
+	});
+}
+
+function editCourier(){
+	var courier = {};
+	courier.courierId = $("#courierIdForEditPage").val();
+	courier.courierName = $("#courierNameForEditPage").val();
+	courier.courierSex = $("#courierSexEdit").val();
+	courier.courierTelephone = $("#telephoneEdit").val();
+	courier.status = $("#statusEdit").val();
+	$.ajax({
+		url : "/api/courier",
+		type : "put",
+		contentType: "application/json",
+		data : JSON.stringify(courier),
+		success : function (rs) {
+			if (rs.status == 200) {
+				initTable(DEFAULT_PAGE_SIZE);
+			} else {
+				layer.msg(rs.message, {icon: 0});
+			}
+		},
+		error : function (data) {
+			layer.msg(data.responseText, {icon: 0});
+		}
+	});
+}
+
+function initEditModal(courierId) {
+	$.ajax({
+		url : "/api/courier/" + courierId,
+		type : "get",
+		contentType: "application/json",
+		success : function (rs) {
+			$("#courierIdForEditPage").val(rs.courierId);
+			$("#courierNameForEditPage").val(rs.courierName);
+			$("#courierSexEdit").val(rs.courierSex);
+			$("#telephoneEdit").val(rs.courierTelephone);
+			$("#statusEdit").val(rs.status);
+		},
+		error : function (data) {
+			layer.alert(data.responseText, {icon: 0});
+		}
+	});
+}
+
+function insertCourier() {
+	var courier = {};
+	courier.courierName = $("#courierNameForAddPage").val();
+	courier.courierSex = $("#courierSexForAddPage").val();
+	courier.courierTelephone = $("#courierTelephone").val();
+	courier.courierEntrytime = $("#courierEntrytime").val();
+	courier.status = $("#status").val();
+	$.ajax({
+		url : "/api/courier",
+		type : "post",
+		contentType: "application/json",
+		data : JSON.stringify(courier),
+		success : function (data) {
+			if (data.status == 200) {
+				initTable(DEFAULT_PAGE_SIZE);
+			} else {
+				layer.msg(data.message, {icon: 0});
+				window.location.href = data.object;
+			}
+		},
+		error : function (data) {
+			layer.msg(data.responseText, {icon: 0});
+		}
+	});
+}
+function initCourierAdd() {
+	$("#courierNameForAddPage").val("");
+	$("#courierSexForAddPage").val("");
+	$("#courierTelephone").val("");
+	$("#courierEntrytime").val("");
+	$("#status").val("");
+}
+function initTable(pageSize) {
+	$('#datatable').DataTable({
+		'paging': true,
+		"serverSide": true,
+		"pagingType": "full_numbers", 
+		"pageLength": pageSize, 
+		"processing": true, 
+		"destroy": true, 
+		'lengthChange': true, 
+		'searching': true,
+		'data-show-refresh': true,
+		'ordering': true,
+		'autoWidth': false,
+		"ajax": function (data, callback, settings) {
+			var columIndex = data.order[0].column;
+			var sort = data.order[0].dir;
+			var orderBy = data.columns[columIndex].name;
+			pageSize = data.length == undefined ? pageSize : data.length;
+			
+			var searchVo = {};
+			searchVo.currentPage = (data.start / pageSize) + 1;
+			searchVo.pageSize = pageSize;
+			searchVo.orderBy = orderBy;
+			searchVo.sort = sort;
+			searchVo.keyWord = data.search.value.replace(new RegExp("'",'g')," ");
+
+			$.ajax({
+				url : "/api/couriers",
+				type : "post",
+				contentType: "application/json",
+				data : JSON.stringify(searchVo),
+				success : function (rs) {
+					var fData = {
+						draw :0,
+						recordsTotal: 0,
+						recordsFiltered: 0,
+						data: []
+					};
+					if (!rs) {
+						layer.alert("xxx" + rs.errmsg, {icon: 2});
+						callback(fData);
+						return;
+					};
+					if (rs.list == null) {
+						$('#datatable tbody tr').remove();
+						$('#loading').remove();
+						callback(fData);
+						return;
+					}
+					$('#loading').remove();
+					var gearDatas = [];
+					for (var i = 0; i < rs.list.length; i++) {
+						var rowData = new TData(rs.list[i].courierId, rs.list[i].courierName, 
+								rs.list[i].courierSex,rs.list[i].courierTelephone,rs.list[i].courierEntrytime,rs.list[i].status);
+						gearDatas.push(rowData);
+					}
+					fData.data = gearDatas;
+					fData.recordsTotal = rs.total;
+					fData.recordsFiltered = rs.total;
+					callback(fData);
+				},
+				error : function (data) {
+					layer.alert(data.responseText, {icon: 0});
+				}
+			});
+		},
+		"columns": [ 
+			{data: 'courierId', name: "courier_id", sortable: true}, 
+			{data: 'courierName', name: "courier_name", sortable: true}, 
+			{data: 'courierSex', name: "courier_Sex", sortable: true}, 
+			{data: 'courierTelephone', name: "courier_telephone", sortable: true}, 
+			{data: 'courierEntrytime', name: "courier_Entrytime", sortable: true}, 
+			{data: 'status', name: "status", sortable: true}, 
+			{data: 'operate', width: '80px', sortable: false}
+		]
+	});
+}
+function TData(courierId, courierName, courierSex, courierTelephone, courierEntrytime, status) {
+	this.courierId = courierId;
+	this.courierName = courierName;
+	this.courierSex = courierSex;
+	this.courierTelephone = courierTelephone;
+	this.courierEntrytime = courierEntrytime;
+	this.status = status;
+	this.operate = function () {
+		return "<a href='#' class='btn_editcolor' data-toggle='modal' data-target='#courierEditModal'" + 
+			"onclick='initEditModal(\"" + courierId + "\")'>編輯</a>&nbsp;"+ 
+			"<a href='javascript:void(0);' onclick='deleteCourier(\"" + courierId + "\")' class='btn_editcolor'>刪除</a>";
+	}
+}
+
+</script>

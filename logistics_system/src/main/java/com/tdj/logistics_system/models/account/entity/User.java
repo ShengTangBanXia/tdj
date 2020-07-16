@@ -1,5 +1,6 @@
 package com.tdj.logistics_system.models.account.entity;
 
+import java.io.Serializable;
 import java.util.Date;
 import java.util.List;
 
@@ -10,83 +11,95 @@ import javax.persistence.Id;
 import javax.persistence.Table;
 import javax.persistence.Transient;
 
-import com.fasterxml.jackson.annotation.JsonFormat;
 
 /**
  * 用户类
+ * 
  */
 @Entity
 @Table(name="user")
-public class User {
+public class User implements Serializable{
+	private static final long serialVersionUID = 1L;
 	@Id
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
 	private int userId;
 	private String userName;
+	private String sex;
 	private String password;
-	private String userImg;
-	@JsonFormat(pattern = "yyyy-MM-dd HH:mm:ss", timezone = "GMT+8")
-	private Date createDate;
-
-	////加上此注解，可让该属性不会出现在数据库自动生成的表中
+	private String position;
+	private String userTelephone;
+	private String userImage;
+	private String userAddress;
+	
 	@Transient
 	private boolean rememberMe;
-//	@Transient
-//	private List<Role> roles;
-
+	@Transient
+	private List<Role> roles;
 	public int getUserId() {
 		return userId;
 	}
-
 	public void setUserId(int userId) {
 		this.userId = userId;
 	}
-
 	public String getUserName() {
 		return userName;
 	}
-
 	public void setUserName(String userName) {
 		this.userName = userName;
 	}
-
+	public String getSex() {
+		return sex;
+	}
+	public void setSex(String sex) {
+		this.sex = sex;
+	}
 	public String getPassword() {
 		return password;
 	}
-
 	public void setPassword(String password) {
 		this.password = password;
 	}
-
-	public Date getCreateDate() {
-		return createDate;
+	public String getPosition() {
+		return position;
 	}
-
-	public void setCreateDate(Date createDate) {
-		this.createDate = createDate;
+	public void setPosition(String position) {
+		this.position = position;
 	}
-
-	public boolean getRememberMe() {
+	public String getUserTelephone() {
+		return userTelephone;
+	}
+	public void setUserTelephone(String userTelephone) {
+		this.userTelephone = userTelephone;
+	}
+	public String getUserImage() {
+		return userImage;
+	}
+	public void setUserImage(String userImage) {
+		this.userImage = userImage;
+	}
+	public String getUserAddress() {
+		return userAddress;
+	}
+	public void setUserAddress(String userAddress) {
+		this.userAddress = userAddress;
+	}
+	
+	public boolean isRememberMe() {
 		return rememberMe;
 	}
-
 	public void setRememberMe(boolean rememberMe) {
 		this.rememberMe = rememberMe;
 	}
-
-//	public List<Role> getRoles() {
-//		return roles;
-//	}
-//
-//	public void setRoles(List<Role> roles) {
-//		this.roles = roles;
-//	}
-
-	public String getUserImg() {
-		return userImg;
+	public List<Role> getRoles() {
+		return roles;
 	}
-
-	public void setUserImg(String userImg) {
-		this.userImg = userImg;
+	public void setRoles(List<Role> roles) {
+		this.roles = roles;
 	}
-
+	@Override
+	public String toString() {
+		return "User [userId=" + userId + ", userName=" + userName + ", sex=" + sex + ", password=" + password
+				+ ", position=" + position + ", userTelephone=" + userTelephone + ", userImage=" + userImage
+				+ ", userAddress=" + userAddress + ", rememberMe=" + rememberMe + ", roles=" + roles + "]";
+	}
 }

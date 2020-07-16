@@ -1,0 +1,367 @@
+<div class="right_col" role="main">
+	<div class="">
+		<div class="page-title">
+			<div class="title_left">
+				<h3>
+					Account / Customers <small>This is customers list.</small>
+				</h3>
+			</div>
+		
+		</div>
+		
+		<div class="clearfix"></div>
+		
+		<div class="row">
+			<div class="col-md-12 col-sm-12 ">
+				<div class="x_panel">
+					<div class="x_title">
+						<ul class="nav panel_toolbox" style="margin-left:0; float: left;">
+							<li>
+								<button type="button" class="btn btn-primary" id="addCustomerBtn"
+									data-toggle="modal" data-target="#customerAddModal">新 增</button>
+							</li>
+						</ul>
+						<div class="clearfix"></div>
+					</div>
+					<div class="x_content">
+						<div class="row">
+							<div class="col-sm-12">
+								<div class="card-box table-responsive">
+									<!-- <p class="text-muted font-13 m-b-30">
+										对用户列表的增删改查。
+									</p> -->
+									<table id="datatable" class="table table-hover"
+										style="width: 100%">
+										<thead>
+											<tr>
+												<th>CustomerId</th>
+												<th>CustomerName</th>
+												<th>customerSex</th>
+												<th>CustomerPosition</th>
+												<th>CustomerTelephone</th>
+												<th>CustomerEmail</th>
+												<th>customerAddress</th>
+												<th>CustomerEntrytime</th>
+												<th>CustomerDiploma</th>
+												<th>CustomerDepartement</th>
+												<th>accountNumber</th>
+												<th>password</th>
+												<th>customerBirthday</th>
+												<th>Operation</th>
+											</tr>
+										</thead>
+										<tbody></tbody>
+									</table>
+								</div>
+							</div>
+						</div>
+					</div>
+				</div>
+			</div>
+		</div>
+	</div>
+</div>
+
+<div th:replace="account/customerAdd"></div>
+<div th:replace="account/customerEdit"></div>
+
+<script type="text/javascript">
+var DEFAULT_PAGE_SIZE = 5;
+// 加载页面时，需要执行的 js 代码
+$(document).ready(function() {
+	initTable(DEFAULT_PAGE_SIZE);
+	
+	$("#addCustomerBtn").bind("click", function() {
+		initCustomerAdd();
+	});
+	$("#customerAddBtn").bind("click", function() {
+		insertCustomer();
+	});
+	$("#customerEditBtn").bind("click", function() {
+		editCustomer();
+	});
+});
+
+function deleteCustomer(customerId){
+	bootbox.confirm("Are you sure?", function(result) {
+		if(result) {
+			$.ajax({
+				url : "/customer/customer/" + customerId,
+				type : "delete",
+				contentType: "application/json",
+				success : function (data) {
+					if (data.status == 200) {
+						initTable(DEFAULT_PAGE_SIZE);
+					} else {
+						layer.msg(data.message, {icon: 0});
+						window.location.href = data.object;
+					}
+				},
+				error : function (data) {
+					layer.msg(data.responseText, {icon: 0});
+				}
+			});
+		}
+	});
+}
+
+function editCustomer(){
+	var customer = {};
+	customer.customerId = $("#customerIdForEditPage").val();
+	customer.customerName = $("#customerNameForEditPage").val();
+	customer.customerTelephone = $("#customerTelephoneForEditPage").val();
+	customer.customerEmail = $("#customerEmailForEditPage").val();
+	customer.accountNumber = $("#accountNumberForEditPage").val();
+	customer.password = $("#passwordForEditPage").val();
+	var roles = new Array();
+	$.each($("input[name='roleForEditPage']"), function(){
+		if(this.checked){
+			var role = {};
+			role.roleId = $(this).val();
+			roles.push(role);
+		}
+	});
+	customer.roles = roles;
+	$.ajax({
+		url : "/customer/customer",
+		type : "put",
+		contentType: "application/json",
+		data : JSON.stringify(customer),
+		success : function (rs) {
+			if (rs.status == 200) {
+				initTable(DEFAULT_PAGE_SIZE);
+			} else {
+				layer.msg(rs.message, {icon: 0});
+			}
+		},
+		error : function (data) {
+			layer.msg(data.responseText, {icon: 0});
+		}
+	});
+}
+function initEditModal(customerId) {
+	initRoles("rolesForEditPage","roleForEditPage");
+	$.ajax({
+		url : "/customer/customer/" + customerId,
+		type : "get",
+		contentType: "application/json",
+		success : function (rs) {
+			$("#customerIdForEditPage").val(rs.customerId);
+			$("#customerNameForEditPage").val(rs.customerName);
+			$("#customerTelephoneForEditPage").val(rs.customerTelephone);
+			$("#customerEmailForEditPage").val(rs.customerEmail);
+		    $("#accountNumberForEditPage").val(rs.accountNumber);
+		    $("#passwordForEditPage").val(rs.password);
+			$.each(rs.roles, function(i, item){
+				$("input[name='roleForEditPage'][value=" + item.roleId + "]")
+					.attr("checked","checked");
+			});
+		},
+		error : function (data) {
+			layer.alert(data.responseText, {icon: 0});
+		}
+	});
+}
+function insertCustomer() {
+	var customer = {};
+	customer.customerName = $("#customerNameForAddPage").val();
+	customer.customerSex = $("#customerSexForAddPage").val();
+	customer.customerPosition = $("#customerPositionForAddPage").val();
+	customer.customerTelephone = $("#customerTelephoneForAddPage").val();
+	customer.customerEmail = $("#customerEmailForAddPage").val();
+	customer.customerAddress = $("#customerAddressForAddPage").val();
+	customer.customerEntrytime = $("#customerEntrytimeForAddPage").val();
+	customer.customerDiploma = $("#customerDiplomaForAddPage").val();
+	customer.customerDepartement = $("#customerDepartementForAddPage").val();
+	customer.accountNumber = $("#accountNumberForAddPage").val();
+	customer.password = $("#passwordForAddPage").val();
+	customer.customerBirthday = $("#customerBirthdayForAddPage").val();
+	var roles = new Array();
+	$.each($("input[name='roleForAddPage']"), function(){
+		if(this.checked){
+			var role = {};
+			role.roleId = $(this).val();
+			roles.push(role);
+		}
+	});
+	customer.roles = roles;
+	
+	$.ajax({
+		url : "/customer/customer",
+		type : "post",
+		contentType: "application/json",
+		data : JSON.stringify(customer),
+		success : function (data) {
+			if (data.status == 200) {
+				initTable(DEFAULT_PAGE_SIZE);
+			} else {
+				layer.msg(data.message, {icon: 0});
+				window.location.href = data.object;
+			}
+		},
+		error : function (data) {
+			layer.msg(data.responseText, {icon: 0});
+		}
+	});
+}
+
+
+function initCustomerAdd() {
+	$("#customerNameForAddPage").val("");
+	$("#customerSexForAddPage").val("");
+	$("#customerPositionForAddPage").val("");
+	$("#customerTelephoneForAddPage").val("");
+	$("#customerEmailForAddPage").val("");
+	$("#customerAddressForAddPage").val("");
+	$("#customerEntrytimeForAddPage").val("");
+	$("#customerDiplomaForAddPage").val("");
+	$("#customerDepartementForAddPage").val("");
+	$("#accountNumberForAddPage").val("");
+	$("#passwordForAddPage").val("");
+	$("#customerBirthdayForAddPage").val("");
+	initRoles("rolesForAddPage","roleForAddPage");
+}
+function initRoles(rolesDiv,roleName) {
+	$("#" + rolesDiv + "").empty();
+	$.ajax({
+		url : "/role/roles",
+		type : "get",
+		contentType: "application/json",
+		success : function (rs) {
+			$("#" + rolesDiv + "").append("<label class='middle'>");
+			$.each(rs, function(i, role) {
+				$("#" + rolesDiv + "").append("<input name='"+ roleName + "' value='" + 
+						role.roleId +"' type='checkbox'>" + role.roleName + "&nbsp;&nbsp;");
+			});
+			$("#" + rolesDiv + "").append("</label>");
+		},
+		error : function (data) {
+			layer.alert(data.responseText, {icon: 0});
+		}
+	});
+} 
+
+function initTable(pageSize) {
+	$('#datatable').DataTable({
+		'paging': true, //分页
+		"serverSide": true, //开启后端分页
+		"pagingType": "full_numbers", //分页样式的类型simple/simple_numbers/full/full_numbers
+		"pageLength": pageSize, //定义初始的页长
+		"processing": true, 
+		"destroy": true, //允许销毁替换，在表格重新查询时，可以自动销毁以前的data
+		'lengthChange': true, //控制是否能够调整每页的条数
+		'searching': true,
+		'data-show-refresh': true,
+		'ordering': true,
+		'autoWidth': false,
+		"ajax": function (data, callback, settings) {
+			// 从data获取查询数据
+			var columIndex = data.order[0].column;
+			var sort = data.order[0].dir;
+			var orderBy = data.columns[columIndex].name;
+			pageSize = data.length == undefined  ? pageSize : data.length;
+			
+			var searchVo = {};
+			searchVo.currentPage = (data.start / pageSize) + 1;
+			searchVo.pageSize = pageSize;
+			searchVo.orderBy = orderBy;
+			searchVo.sort = sort;
+			searchVo.keyWord = data.search.value.replace(new RegExp("'",'g')," ");
+
+			$.ajax({
+				url : "/customer/customers",
+				type : "post",
+				contentType: "application/json",
+				data : JSON.stringify(searchVo),
+				success : function (rs) {
+					var fData = {
+						draw :0,
+						recordsTotal: 0,
+						recordsFiltered: 0,
+						data: []
+					};
+					if (!rs) {
+						layer.alert("请求出错，请稍后重试" + rs.errmsg, {icon: 2});
+						callback(fData);
+						return;
+					};
+					if (rs.list == null) {
+						$('#datatable tbody tr').remove();
+						$('#loading').remove();
+						callback(fData);
+						return;
+					}
+					$('#loading').remove();
+					var gearDatas = [];
+					for (var i = 0; i < rs.list.length; i++) {
+						//包装行数据
+						var rowData = new TData(
+								rs.list[i].customerId,
+								rs.list[i].customerName,
+								rs.list[i].customerSex,
+								rs.list[i].customerPosition,
+								rs.list[i].customerTelephone,
+								rs.list[i].customerEmail,
+								rs.list[i].customerAddress,
+								rs.list[i].customerEntrytime,
+								rs.list[i].customerDiploma,
+								rs.list[i].customerDepartement,
+								rs.list[i].accountNumber,
+								rs.list[i].password,
+								rs.list[i].customerBirthday
+								);
+						// 将行数据放到数组里
+						gearDatas.push(rowData);
+					}
+					fData.data = gearDatas;
+					fData.recordsTotal = rs.total;
+					fData.recordsFiltered = rs.total;
+					callback(fData);
+				},
+				error : function (data) {
+					layer.alert(data.responseText, {icon: 0});
+				}
+			});
+		},
+		"columns": [ //定义行数据字段
+			{data: 'customerId', name: "customer_id", sortable: true}, 
+			{data: 'customerName', name: "customer_name", sortable: true},
+			{data: 'customerSex', name: "customer_sex", sortable: true}, 
+			{data: 'customerPosition', name: "customer_position", sortable: true},
+			{data: 'customerTelephone', name: "customer_telephone", sortable: true}, 
+			{data: 'customerEmail', name: "customer_email", sortable: true},
+			{data: 'customerAddress', name: "customer_address", sortable: true}, 
+			{data: 'customerEntrytime', name: "customer_entrytime", sortable: true},
+			{data: 'customerDiploma', name: "customer_diploma", sortable: true}, 
+			{data: 'customerDepartement', name: "customer_departement", sortable: true},
+			{data: 'accountNumber', name: "accountNumber", sortable: true}, 
+			{data: 'password', name: "password", sortable: true},
+			{data: 'customerBirthday', name: "customer_birthday", sortable: true},
+			{data: 'operate', width: '80px', sortable: false}
+		]
+	});
+}
+
+//行数据结构
+function TData(customerId, customerName,customerSex,customerPosition,customerTelephone,customerEmail,customerAddress,
+		customerEntrytime,customerDiploma,customerDepartement,accountNumber,password,customerBirthday) {
+	this.customerId = customerId;
+	this.customerName = customerName;
+	this.customerSex = customerSex;
+	this.customerPosition = customerPosition;
+	this.customerTelephone = customerTelephone;
+	this.customerEmail = customerEmail;
+	this.customerAddress = customerAddress;
+	this.customerEntrytime = customerEntrytime;
+	this.customerDiploma = customerDiploma;
+	this.customerDepartement = customerDepartement;
+	this.accountNumber = accountNumber;
+	this.password = password;
+	this.customerBirthday = customerBirthday;
+	this.operate = function () {
+		return "<a href='#' class='btn_editcolor' data-toggle='modal' data-target='#customerEditModal' " + 
+			"onclick='initEditModal(\"" + customerId + "\")'>编辑</a>&nbsp;" + 
+			"<a href='javascript:void(0);' onclick='deleteCustomer(\"" + customerId + "\")' class='btn_editcolor'>删除</a>";
+	}
+}
+</script>

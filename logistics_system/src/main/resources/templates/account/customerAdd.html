@@ -1,0 +1,117 @@
+<!-- 模态框（Modal） -->
+<div th:fragment="customerAdd" class="modal fade" id="customerAddModal" tabindex="-1"
+	role="dialog" aria-labelledby="customerAddLabel" aria-hidden="true">
+	<div class="modal-dialog">
+		<div class="modal-content">
+			<div class="modal-header">
+				<h4 class="modal-title" id="customerAddLabel"
+					style="font-size: 18px; font-weight: 500;">CustomerId</h4>
+				<button type="button" class="close" data-dismiss="modal"
+					aria-hidden="true">&times;</button>
+			</div>
+			<div class="modal-body">
+				<form class="form-horizontal">
+					<div class="form-group row">
+						<label class="control-label col-md-3">CustomerName</label>
+						<div class="col-md-8">
+							<input id="customerNameForAddPage" name="customerName" class="form-control" 
+								type="text" placeholder="Enter customer name">
+						</div>
+					</div>
+					<div class="form-group row">
+						<label class="control-label col-md-3">customerSex</label>
+						<div class="col-md-8">
+							<input id="customerSexForAddPage" name="customerSex" class="form-control" 
+								type="text" placeholder="Enter customer sex">
+						</div>
+					</div>
+					
+					<div class="form-group row">
+						<label class="control-label col-md-3">customerPosition</label>
+						<div class="col-md-8">
+							<input id="customerPositionForAddPage" name="customerPosition" class="form-control" 
+								type="text" placeholder="Enter customer position">
+						</div>
+					</div>
+					<div class="form-group row">
+						<label class="control-label col-md-3">customerTelephone</label>
+						<div class="col-md-8">
+							<input id="customerTelephoneForAddPage" name="customerTelephone" class="form-control" 
+								type="text" placeholder="Enter customer tel">
+						</div>
+					</div>
+					<div class="form-group row">
+						<label class="control-label col-md-3">customerEmail</label>
+						<div class="col-md-8">
+							<input id="customerEmailForAddPage" name="customerEmail" class="form-control" 
+								type="text" placeholder="Enter customer email">
+						</div>
+					</div>
+					<div class="form-group row">
+						<label class="control-label col-md-3">customerAddress</label>
+						<div class="col-md-8">
+							<input id="customerAddressForAddPage" name="customerAddress" class="form-control" 
+								type="text" placeholder="Enter customer address">
+						</div>
+					</div>
+					<div class="form-group row">
+						<label class="control-label col-md-3">customerEntrytime</label>
+						<div class="col-md-8">
+							<input id="customerEntrytimeForAddPage" name="customerEntrytime" class="form-control" 
+								type="text" placeholder="Enter customer entryTime">
+						</div>
+					</div>
+					<div class="form-group row">
+						<label class="control-label col-md-3">customerDiploma</label>
+						<div class="col-md-8">
+							<input id="customerDiplomaForAddPage" name="customerDiploma" class="form-control" 
+								type="text" placeholder="Enter customer diploma">
+						</div>
+					</div>
+					<div class="form-group row">
+						<label class="control-label col-md-3">customerDepartement</label>
+						<div class="col-md-8">
+							<input id="customerDepartementForAddPage" name="customerDepartement" class="form-control" 
+								type="text" placeholder="Enter customer departement">
+						</div>
+					</div>
+					<div class="form-group row">
+						<label class="control-label col-md-3">accountNumber</label>
+						<div class="col-md-8">
+							<input id="accountNumberForAddPage" name="accountNumber" class="form-control" 
+								type="text" placeholder="Enter customer number">
+						</div>
+					</div>
+					<div class="form-group row">
+						<label class="control-label col-md-3">Password</label>
+						<div class="col-md-8">
+							<input id="passwordForAddPage" name="password" class="form-control" 
+								type="password" placeholder="Enter customer password">
+						</div>
+					</div>	
+					<div class="form-group row">
+						<label class="control-label col-md-3">customerBirthday</label>
+						<div class="col-md-8">
+							<input id="customerBirthdayForAddPage" name="customerBirthday" class="form-control" 
+								type="text" placeholder="Enter customer birthday">
+						</div>
+					</div>	
+					<div class="form-group row">
+						<label class="control-label col-md-3">Roles</label>
+						<div class="col-md-8" id="rolesForAddPage" name="roles"></div>
+					</div>
+				</form>
+			</div>
+			<div class="modal-footer">
+				<!-- data-dismiss="modal"关闭模态框 -->
+				<a class="btn btn-secondary" href="#" data-dismiss="modal">
+					<i class="fa fa-fw fa-lg fa-times-circle"></i>Cancel
+				</a>
+				<button id="customerAddBtn" data-dismiss="modal" 
+					class="btn btn-primary" type="button">
+					<i class="fa fa-fw fa-lg fa-check-circle"></i>Submit
+				</button>
+			</div>
+		</div>
+	</div>
+</div>

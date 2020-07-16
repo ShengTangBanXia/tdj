@@ -4,36 +4,53 @@
 	xmlns:sec="http://www.thymeleaf.org/thymeleaf-extras-springsecurity3"
 	xmlns:shiro="http://www.pollix.at/thymeleaf/shiro" lang="en">
   <head>
-    <meta name="description" content="Vali is a responsive and free admin theme built with Bootstrap 4, SASS and PUG.js. It's fully customizable and modular.">
-    <!-- Twitter meta-->
+<!--     <meta name="description" content="Vali is a responsive and free admin theme built with Bootstrap 4, SASS and PUG.js. It's fully customizable and modular.">
+    Twitter meta
     <meta property="twitter:card" content="summary_large_image">
     <meta property="twitter:site" content="@pratikborsadiya">
     <meta property="twitter:creator" content="@pratikborsadiya">
-    <!-- Open Graph Meta-->
+    Open Graph Meta
     <meta property="og:type" content="website">
     <meta property="og:site_name" content="Vali Admin">
     <meta property="og:title" content="Vali - Free Bootstrap 4 admin theme">
-    <meta property="og:url" content="http://pratikborsadiya.in/blog/vali-admin">
-    <meta property="og:image" content="http://pratikborsadiya.in/blog/vali-admin/hero-social.png">
-    <meta property="og:description" content="Vali is a responsive and free admin theme built with Bootstrap 4, SASS and PUG.js. It's fully customizable and modular.">
+    <meta property="og:url" content="http://pratikborsadiya.in/blog/vali-admin"> -->
+    <!-- <meta property="og:image" content="http://pratikborsadiya.in/blog/vali-admin/hero-social.png"> -->
+<!--     <meta property="og:description" content="Vali is a responsive and free admin theme built with Bootstrap 4, SASS and PUG.js. It's fully customizable and modular."> -->
     <title>Logistics Manager System</title>
     <meta charset="utf-8">
-    <meta http-equiv="X-UA-Compatible" content="IE=edge">
-    <meta name="viewport" content="width=device-width, initial-scale=1">
+<!--     <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1"> -->
     
     <!-- Main CSS-->
     <link th:href="${'/css/main.css'}" type="text/css" rel="stylesheet" />
     <!-- Font-icon css-->
     <link rel="stylesheet" type="text/css" href="https://maxcdn.bootstrapcdn.com/font-awesome/4.7.0/css/font-awesome.min.css"> 
-    
+
+	<!-- jquery.dataTables -->
+	<link th:href="${'/css/jquery.dataTables.min.css'}" rel="stylesheet" >
+	
+	<!-- dataTables -->
+	<link th:href="${'/vendors/datatables.net-bs/css/dataTables.bootstrap.min.css'}" rel="stylesheet" />
+	
+	<!-- buttons.bootstrap -->
+	<link th:href="${'/vendors/datatables.net-buttons-bs/css/buttons.bootstrap.min.css'}" rel="stylesheet" />
+	
     <!-- jQuery -->
 	<script th:src="${'/vendors/jquery/dist/jquery.js'}" type="text/javascript"></script>
+    
+    <!-- jquery.dataTables -->
+	<script th:src="${'/vendors/datatables.net/js/jquery.dataTables.min.js'}" type="text/javascript"></script>
+   
+   	<!-- dataTables.buttons -->
+	<script th:src="${'/vendors/datatables.net-buttons/js/dataTables.buttons.min.js'}" type="text/javascript"></script>
+	<!-- dataTables.buttons -->
+	<script th:src="${'/vendors/datatables.net-buttons-bs/js/buttons.bootstrap.min.js'}" type="text/javascript"></script> 
     
     <!-- layer -->
 	<script th:src="@{https://cdn.bootcss.com/layer/2.1/layer.js}" type="text/javascript"></script>   
     
     <!-- 删除确认框-->
-   	<script th:src="${'/build/js/bootbox.js'}" type="text/javascript"></script>
+   	<script th:src="${'/js/bootbox.js'}" type="text/javascript"></script>
     
   </head>
   <body class="app sidebar-mini">
@@ -55,23 +72,14 @@
 	<div th:replace="fragments/footer"></div>
 
     <!-- Essential javascripts for application to work-->    
-    
-
     <script th:src="${'/js/popper.min.js'}" type="text/javascript"></script>
     <script th:src="${'/js/bootstrap.min.js'}" type="text/javascript"></script>
     <script th:src="${'/js/main.js'}" type="text/javascript"></script>
     
-
     <!-- The javascript plugin to display page loading on top-->
-    
     <script th:src="${'/js/plugins/pace.min.js'}" type="text/javascript"></script>
-   
     <script th:src="${'/js/plugins/chart.js'}" type="text/javascript"></script>
 
-
-
-
-   
 <script type="text/javascript">
   var data = {
   	labels: ["January", "February", "March", "April", "May"],
@@ -131,5 +139,5 @@
   	ga('send', 'pageview');
   }
 </script>
-  </body>
+</body>
 </html>

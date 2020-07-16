@@ -1,0 +1,63 @@
+<!-- 模态框（Modal） -->
+<div th:fragment="courierEdit" class="modal fade" id="courierEditModal" tabindex="-1"
+	courier="dialog" aria-labelledby="courierEditLabel" aria-hidden="true">
+	<div class="modal-dialog">
+		<div class="modal-content">
+			<div class="modal-header">
+				<h4 class="modal-title" id="courierEditLabel"
+					style="font-size: 18px; font-weight: 500;">Courier Edit</h4>
+				<button type="button" class="close" data-dismiss="modal"
+					aria-hidden="true">&times;</button>
+			</div>
+			<div class="modal-body">
+				<form class="form-horizontal">
+					<div class="form-group row">
+						<label class="control-label col-md-3">Courier Id</label>
+						<div class="col-md-8">
+							<input id="courierIdForEditPage" name="courierId" class="form-control" 
+								type="text" placeholder="Enter courier name" readonly/>
+						</div>
+					</div>
+					<div class="form-group row">
+						<label class="control-label col-md-3">Courier Name</label>
+						<div class="col-md-8">
+							<input id="courierNameForEditPage" name="courierName" class="form-control" 
+								type="text" placeholder="Enter courier name">
+						</div>
+					</div>
+					<div class="form-group row">
+						<label class="control-label col-md-3">Courier Sex</label>
+						<div class="col-md-8">
+							<input id="courierSexEdit" name="courierSex" class="form-control" 
+								type="text" placeholder="Enter courier name">
+						</div>
+					</div>
+					<div class="form-group row">
+						<label class="control-label col-md-3">Courier Telephone</label>
+						<div class="col-md-8">
+							<input id="telephoneEdit" name="courierTelephone" class="form-control" 
+								type="text" placeholder="Enter courier name">
+						</div>
+					</div>
+					<div class="form-group row">
+						<label class="control-label col-md-3">Status</label>
+						<div class="col-md-8">
+							<input id="statusEdit" name="status" class="form-control" 
+								type="text" placeholder="Enter courier name">
+						</div>
+					</div>
+				</form>
+			</div>
+			<div class="modal-footer">
+				<!-- data-dismiss="modal"关闭模态框 -->
+				<a class="btn btn-secondary" href="#" data-dismiss="modal">
+					<i class="fa fa-fw fa-lg fa-times-circle"></i>Cancel
+				</a>
+				<button id="courierEditBtn" data-dismiss="modal" 
+					class="btn btn-primary" type="button">
+					<i class="fa fa-fw fa-lg fa-check-circle"></i>Submit
+				</button>
+			</div>
+		</div>
+	</div>
+</div>

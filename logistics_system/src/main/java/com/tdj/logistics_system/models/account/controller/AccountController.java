@@ -24,10 +24,61 @@ public class AccountController {
 		
 		return "index";
 	}
+
+	/**
+	 * 127.0.0.1/order/orderSelect
+	 */
+	@RequestMapping("/orderSelect")
+	public String orderSelect() {
+		
+		return "index";
+	}
 	
 	@RequestMapping("/test")
 	public String testPage() {
 		
+		return "index";
+	}
+	
+	/**
+	 * http://127.0.0.1/account/customers
+	 */
+	@RequestMapping("/customers")
+	public String customersPage() {
+		return "index";
+	}
+	
+	/**
+	 * http://127.0.0.1/account/couriers
+	 */
+	@RequestMapping("/couriers")
+	public String couriersPage() {
+		return "index";
+	}
+	
+	/**
+	 * http://127.0.0.1/account/users
+	 */
+	@RequestMapping("/users")
+	public String usersPage() {
+		return "index";
+	}
+	
+	/**
+	 * http://127.0.0.1/account/resources
+	 */
+	@RequestMapping("/resources")
+	public String resourcesPage() {
+		return "index";
+	}
+	
+	@RequestMapping("/login")
+	public String login() {
+		return "indexSimple";
+	}
+	
+	@RequestMapping("/dashboard")
+	public String dd() {
 		return "index";
 	}
 	
